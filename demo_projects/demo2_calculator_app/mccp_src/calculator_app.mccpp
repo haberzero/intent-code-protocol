@@ -1,0 +1,240 @@
+// 文件路径: demo_projects/demo2_calculator_app/calculator_app.mccp_p
+// 项目名称: 基础命令行计算器应用
+// MCCP 层级: 符号-伪代码层
+// 描述: 根据 calculator_app.mccp_b 行为描述文件生成的符号-伪代码，
+//      用于精确指导后续实际代码的生成。
+
+// -- 常量定义 (对应行为描述中的宏概念) --
+variable CONSTANT_FLOAT_TOLERANCE = 0.000001 // 用于浮点数比较的容差，特别是除零检查
+
+// -- 结构定义 (概念性，用于函数返回多个值或复杂结构) --
+// Structure for parsing results
+structure ParseResult:
+    variable success: Boolean
+    variable operand1: Float
+    variable operator: String
+    variable operand2: Float
+    variable error_type: String // "INVALID_INPUT", "PARSE_ERROR", or empty if success
+
+// Structure for calculation results
+structure CalculationResult:
+    variable success: Boolean
+    variable result: Float
+    variable error_type: String // "DIVISION_BY_ZERO", or empty if success
+
+// -- 函数定义 --
+
+// 函数: main_loop()
+// 作用: 实现命令行计算器的主循环逻辑。
+method main_loop():
+    // 变量定义
+    variable last_result: Float // 存储上一次成功计算的结果
+    variable current_input: String // 存储当前用户输入的字符串
+    variable parsed_data: ParseResult // 存储解析结果
+    variable calc_result: CalculationResult // 存储计算结果
+
+    // 初始化状态
+    assign last_result = NaN // 使用 NaN 或特殊值表示没有上次结果
+
+    // 显示欢迎信息和使用提示 (对应行为描述中的 # PROMPT_MESSAGE 概念)
+    call print_to_console("Welcome to the basic command line calculator!")
+    call print_to_console("Enter expressions like '10 + 5' or '+ 5' for continuous calculation.")
+    call print_to_console("Type 'exit' or 'quit' to leave.")
+
+    // 主循环
+    loop forever:
+        // 显示输入提示符 (对应行为描述中的 # PROMPT_MESSAGE 概念)
+        call print_to_console("> ")
+
+        // 获取用户输入
+        assign current_input = call get_user_input()
+
+        // 判断是否为退出命令
+        if call is_exit_command(current_input) then
+            break loop // 跳出主循环
+        end if
+
+        // 解析用户输入
+        assign parsed_data = call parse_expression(current_input, last_result)
+
+        // 根据解析结果处理
+        if parsed_data.success then
+            // 解析成功，执行计算
+            assign calc_result = call calculate(parsed_data.operand1, parsed_data.operator, parsed_data.operand2)
+
+            if calc_result.success then
+                // 计算成功
+                assign last_result = calc_result.result // 更新上一次结果
+                call display_result(calc_result.result) // 显示结果
+            else
+                // 计算失败 (如除零)
+                call handle_error(calc_result.error_type) // 处理并显示错误信息
+                // last_result 不更新，保持上次有效结果
+            end if
+        else
+            // 解析失败
+            call handle_error(parsed_data.error_type) // 处理并显示错误信息
+            // last_result 不更新
+        end if
+
+    end loop
+
+    // 程序退出流程
+    call print_to_console("Exiting calculator. Goodbye!")
+
+// 函数: get_user_input()
+// 作用: 从标准输入读取用户输入的字符串。
+method get_user_input() returns String:
+    // 伪代码表示从标准输入读取一行文本
+    variable input_string = read_line_from_stdin()
+    return input_string
+
+// 函数: parse_expression(input_string: String, last_result: Float)
+// 作用: 解析输入的字符串。处理 "num1 op num2" 或 "op num2" 格式。
+// 返回: ParseResult 结构
+method parse_expression(input_string: String, last_result: Float) returns ParseResult:
+    variable result: ParseResult // 声明一个 ParseResult 结构来存储结果
+
+    assign result.success = false // 默认解析失败
+    assign result.error_type = ""
+
+    // 清理输入字符串 (移除前后空格)
+    variable trimmed_input = trim(input_string)
+
+    // 尝试按照 "num1 op num2" 格式解析
+    variable parts = split_string(trimmed_input, " ") // 简单 split by space 示例
+    if size(parts) == 3 then
+        variable part1 = parts[0]
+        variable part2 = parts[1]
+        variable part3 = parts[2]
+
+        // 尝试转换操作数
+        variable num1_parsed: Boolean
+        variable num2_parsed: Boolean
+        variable temp_operand1: Float
+        variable temp_operand2: Float
+
+        // to_float 函数会返回一个浮点数值和指示转换是否成功的布尔值
+        assign {temp_operand1, num1_parsed} = to_float(part1)
+        assign {temp_operand2, num2_parsed} = to_float(part3)
+
+        // 检查操作数和运算符是否有效
+        if num1_parsed and num2_parsed and is_valid_operator(part2) then
+            assign result.success = true
+            assign result.operand1 = temp_operand1
+            assign result.operator = part2
+            assign result.operand2 = temp_operand2
+            return result // 解析成功，返回结果
+        end if
+
+    end if // End "num1 op num2" attempt
+
+    // 如果 "num1 op num2" 失败，尝试按照 "op num2" 格式解析
+    if size(parts) == 2 then
+        variable part1 = parts[0]
+        variable part2 = parts[1]
+
+        variable num2_parsed: Boolean
+        variable temp_operand2: Float
+        assign {temp_operand2, num2_parsed} = to_float(part2)
+
+        // 检查运算符和第二个操作数是否有效，并且上一次结果有效
+        if num2_parsed and is_valid_operator(part1) and is_valid_float(last_result) then // is_valid_float 检查是否为 NaN
+             assign result.success = true
+             assign result.operand1 = last_result // 使用上一次的结果作为第一个操作数
+             assign result.operator = part1
+             assign result.operand2 = temp_operand2
+             return result // 解析成功，返回结果
+        end if
+    end if // End "op num2" attempt
+
+    // 如果以上格式都解析失败，或解析出的部分无效
+    // 更细致的错误判断：区分无效输入（数字/操作符不对）和格式错误
+    // 这里的伪代码简化处理，如果不是预期格式或格式内部分无效，都标记为 PARSE_ERROR 或 INVALID_INPUT
+
+    if size(parts) != 2 and size(parts) != 3 then
+        assign result.error_type = "PARSE_ERROR" // 格式不是两部分或三部分
+    else // size is 2 or 3, but components were invalid
+        assign result.error_type = "INVALID_INPUT" // 格式对了，但内容不对 (非数字或非操作符)
+    end if
+
+    // result.success 默认为 false
+    return result // 返回失败结果
+
+// 辅助函数 (parse_expression 内部可能需要或被调用)
+// 检查字符串是否是有效的运算符
+method is_valid_operator(op_string: String) returns Boolean:
+    return op_string == "+" or op_string == "-" or op_string == "*" or op_string == "/"
+
+// 检查浮点数是否有效 (非 NaN, 非 Infinity)
+method is_valid_float(num: Float) returns Boolean:
+    // 伪代码表示检查浮点数的有效性
+    return !is_nan(num) and !is_infinite(num)
+
+
+// 函数: calculate(operand1: Float, operator: String, operand2: Float)
+// 作用: 根据运算符执行计算。
+// 返回: CalculationResult 结构
+method calculate(operand1: Float, operator: String, operand2: Float) returns CalculationResult:
+    variable result: CalculationResult
+    assign result.success = true // 默认计算成功
+    assign result.error_type = ""
+
+    // 运算分发逻辑
+    if operator == "+" then
+        assign result.result = operand1 + operand2
+    else if operator == "-" then
+        assign result.result = operand1 - operand2
+    else if operator == "*" then
+        assign result.result = operand1 * operand2
+    else if operator == "/" then
+        // 检查除零 (使用 CONSTANT_FLOAT_TOLERANCE)
+        if abs(operand2) < CONSTANT_FLOAT_TOLERANCE then
+            assign result.success = false // 计算失败
+            assign result.error_type = "DIVISION_BY_ZERO"
+            // result.result 的值此时可能无效，取决于具体实现，伪代码中不强制设定
+        else
+            assign result.result = operand1 / operand2
+        end if
+    else
+        // 理论上解析阶段已检查运算符有效性，此处作为防护或针对未知运算符
+        assign result.success = false
+        assign result.error_type = "UNKNOWN_OPERATOR" // 或其他合适的错误类型
+    end if
+
+    return result
+
+// 函数: display_result(result: Float)
+// 作用: 将计算结果格式化并输出到标准输出。
+method display_result(result: Float):
+    // 伪代码表示将结果格式化为字符串并打印
+    variable formatted_result_string = format_float(result, 2) // 格式化保留2位小数示例
+    call print_to_console("Result: " + formatted_result_string)
+
+// 函数: handle_error(error_type: String)
+// 作用: 根据错误类型输出相应的错误信息到标准输出。
+method handle_error(error_type: String):
+    // 错误处理逻辑分支
+    if error_type == "INVALID_INPUT" then
+        call print_to_console("Error: Invalid input. Please check numbers and operator.")
+    else if error_type == "PARSE_ERROR" then
+        call print_to_console("Error: Invalid input format. Please enter an expression like '10 + 5' or '+ 5'.")
+    else if error_type == "DIVISION_BY_ZERO" then
+        call print_to_console("Error: Division by zero is not allowed.")
+    else
+        // 通用错误信息
+        call print_to_console("An unknown error occurred.")
+    end if
+
+// 函数: is_exit_command(input_string: String)
+// 作用: 判断输入字符串是否为退出命令 ('exit' 或 'quit')，忽略大小写和前后空格。
+// 返回: boolean
+method is_exit_command(input_string: String) returns Boolean:
+    variable trimmed_lower_input = to_lower(trim(input_string))
+    return trimmed_lower_input == "exit" or trimmed_lower_input == "quit"
+
+// -- 程序入口 --
+// 伪代码表示程序开始执行的地方
+program_start:
+    call main_loop()
+program_end:

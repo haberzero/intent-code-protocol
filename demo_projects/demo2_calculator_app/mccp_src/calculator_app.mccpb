@@ -1,0 +1,204 @@
+// 文件路径: demo_projects/demo2_calculator_app/calculator_app.mccp_b
+// 项目名称: 基础命令行计算器应用
+// 目标语言: (待定，行为描述层不强制绑定具体语言，但为后续层级做准备，可在此备注可能的目标) C/C++ 或 Python
+
+// -- 项目文件夹结构的初步构思 --
+// @ 模型：请在生成后续文件时，参照此目录结构进行组织。
+// 项目根目录 (demo_projects/demo2_calculator_app/)
+// ├── src/                // 源代码目录
+// │   └── main.mccp_b    // 主程序行为描述文件 (即当前文件)
+// ├── data/               // 可能用于存放配置或日志 (当前简单应用可能不需要)
+// ├── tests/              // 测试相关文件
+// ├── mccp_config.json    // MCCP 兼容性描述文件 (待生成)
+// └── mccp_symbols.json   // MCCP 符号表文件 (待生成)
+
+// -- 软件基本构成框架 (核心职责划分) --
+// @ 模型：软件应设计为围绕一个主循环运行，并在独立的逻辑单元中处理不同的任务。
+// 核心模块职责:
+// 1. 输入获取模块: 负责从标准输入读取用户的命令行文本。
+// 2. 解析模块: 负责将输入的字符串解析成操作数、运算符或特定命令。
+// 3. 计算模块: 负责执行具体的数学运算。
+// 4. 输出显示模块: 负责将计算结果或错误信息输出到标准输出。
+// 5. 错误处理模块: 负责识别不同类型的错误并生成相应的错误信息。
+// 6. 主控逻辑模块: 负责协调上述模块的调用，管理程序流程和状态 (如连续计算的中间结果)。
+
+// -- 软件关键运行流程描述 (主循环) --
+// @ 模型：请按照以下流程实现主程序逻辑。
+// 1. 程序启动:
+//    - 显示欢迎信息和使用提示。
+//    - 初始化状态变量 (例如，将上一次结果设置为无效或零)。
+// 2. 进入主循环 (持续运行直到退出):
+//    a. 显示输入提示符 (> )。
+//    b. 调用输入获取模块，读取一行用户输入。
+//    c. 调用主控逻辑模块，判断输入是否为退出命令 ('exit' 或 'quit')。
+//       - 如果是退出命令，跳出主循环，进入程序退出流程。
+//    d. 调用解析模块，尝试解析用户输入。
+//    e. 根据解析结果判断:
+//       - 如果解析成功 (识别出有效操作数和运算符):
+//         - 调用计算模块执行计算。
+//         - 如果计算过程中发生错误 (如除以零):
+//           - 调用错误处理模块生成错误信息。
+//           - 调用输出显示模块显示错误信息。
+//         - 否则 (计算成功):
+//           - 更新上一次计算结果状态。
+//           - 调用输出显示模块显示计算结果。
+//       - 如果解析失败 (无效输入、格式错误等):
+//         - 调用错误处理模块生成错误信息 (说明具体错误类型)。
+//         - 调用输出显示模块显示错误信息。
+//    f. 返回循环开始 (步骤 2a)。
+// 3. 程序退出:
+//    - 显示退出信息。
+//    - 终止程序执行。
+
+// -- 初步定义的关键函数及其主要作用，以及主要变量的初步设想及其用途 --
+// @ 模型：请在符号表中记录这些符号，并在符号-伪代码层实现其基本逻辑。
+
+// -- 主要函数定义 --
+// 函数: main_loop()
+// 作用: 实现上述软件关键运行流程描述中的主循环逻辑。
+// 输入: 无
+// 输出: 无
+// 副作用: 与用户交互，可能修改全局状态 (如 last_result)。
+
+// 函数: get_user_input()
+// 作用: 从标准输入读取用户输入的字符串。
+// 输入: 无
+// 输出: string - 用户输入的字符串。
+
+// 函数: parse_expression(input_string, last_result, out_operand1, out_operator, out_operand2)
+// 作用: 解析输入的字符串。处理两种格式: "num1 op num2" 或 "op num2" (连续计算)。
+//       如果输入是 "op num2" 格式，且 last_result 有效，则将 last_result 作为 num1。
+// 输入:
+//   - input_string: string - 用户输入的原始字符串。
+//   - last_result: float - 上一次有效计算的结果 (用于连续计算)。
+// 输出:
+//   - boolean - 解析是否成功。
+//   - out_operand1: float - 解析出的第一个操作数。
+//   - out_operator: string - 解析出的运算符。
+//   - out_operand2: float - 解析出的第二个操作数。
+// 副作用: 通过输出参数返回解析结果。如果解析失败，输出参数的值可能无效。
+
+// 函数: calculate(operand1, operator, operand2, out_error_type)
+// 作用: 根据运算符执行计算。
+// 输入:
+//   - operand1: float - 第一个操作数。
+//   - operator: string - 运算符 ('+', '-', '*', '/').
+//   - operand2: float - 第二个操作数。
+// 输出:
+//   - float - 计算结果。
+//   - out_error_type: string - 如果发生计算错误 (如除零)，返回错误类型字符串；否则返回空或特定成功值。
+// 副作用: 通过输出参数返回错误类型。
+
+// 函数: display_result(result)
+// 作用: 将计算结果格式化并输出到标准输出。
+// 输入:
+//   - result: float - 计算结果。
+// 输出: 无
+// 副作用: 打印输出到控制台。
+
+// 函数: handle_error(error_type)
+// 作用: 根据错误类型输出相应的错误信息到标准输出。
+// 输入:
+//   - error_type: string - 错误类型标识符 (如 "INVALID_INPUT", "DIVISION_BY_ZERO", "PARSE_ERROR")。
+// 输出: 无
+// 副作用: 打印错误信息到控制台。
+
+// 函数: is_exit_command(input_string)
+// 作用: 判断输入字符串是否为退出命令 ('exit' 或 'quit')，忽略大小写和前后空格。
+// 输入:
+//   - input_string: string - 用户输入的字符串。
+// 输出: boolean - 如果是退出命令返回 true，否则返回 false。
+
+// -- 主要变量定义 --
+// 变量: last_result
+// 作用: 存储上一次成功计算的结果，用于支持连续计算功能。
+// 类型: float
+// 范围: 全局或 main_loop 函数内部持久化。
+
+// 变量: current_input
+// 作用: 存储当前用户输入的原始字符串。
+// 类型: string
+// 范围: main_loop 函数内部。
+
+// 变量: operand1, operand2
+// 作用: 存储解析出的操作数。
+// 类型: float
+// 范围: main_loop 或 parse_expression 函数内部。
+
+// 变量: operator
+// 作用: 存储解析出的运算符。
+// 类型: string
+// 范围: main_loop 或 parse_expression 函数内部。
+
+// 变量: calculation_result
+// 作用: 存储 calculate 函数返回的计算结果。
+// 类型: float
+// 范围: main_loop 函数内部。
+
+// 变量: error_status
+// 作用: 存储 calculate 或 parse_expression 函数返回的错误状态/类型。
+// 类型: string
+// 范围: main_loop 函数内部。
+
+// -- 核心业务逻辑分支的描述 --
+// @ 模型：请确保在符号-伪代码层正确实现这些分支逻辑。
+
+// 1. 输入解析逻辑分支 (在 parse_expression 函数中):
+//    - 尝试按照 "num1 op num2" 格式解析输入。
+//    - 如果失败，尝试按照 "op num2" 格式解析输入。
+//      - 如果解析成功且 last_result 有效，则将 last_result 作为 num1。
+//      - 如果解析成功但 last_result 无效 (例如，程序刚启动或上一次是错误)，则视为无效格式。
+//    - 如果上述两种格式都解析失败，则标记为解析错误 ("PARSE_ERROR")。
+//    - 在解析过程中，检查操作数是否为有效数字，运算符是否为 '+', '-', '*', '/' 之一。如果发现无效部分，标记为无效输入错误 ("INVALID_INPUT")。
+
+// 2. 运算分发逻辑分支 (在 calculate 函数中):
+//    - 使用条件判断 (如 if/else if 或 switch) 根据 operator 的值选择对应的运算:
+//      - 如果 operator 是 '+': 执行加法 (operand1 + operand2)。
+//      - 如果 operator 是 '-': 执行减法 (operand1 - operand2)。
+//      - 如果 operator 是 '*': 执行乘法 (operand1 * operand2)。
+//      - 如果 operator 是 '/':
+//        - 检查 operand2 是否接近零 (考虑到浮点数比较，使用一个很小的 epsilon 值)。
+//        - 如果 operand2 接近零，标记为除零错误 ("DIVISION_BY_ZERO")，不执行除法，返回特定错误结果。
+//        - 否则，执行除法 (operand1 / operand2)。
+//    - @ 模型：所有数学运算请使用目标语言的标准浮点数运算，无需处理大整数或高精度计算。
+
+// 3. 错误处理逻辑分支 (在 handle_error 函数中):
+//    - 使用条件判断根据传入的 error_type 值输出不同的错误信息:
+//      - 如果 error_type 是 "INVALID_INPUT": 输出 "Invalid input. Please check numbers and operator."
+//      - 如果 error_type 是 "PARSE_ERROR": 输出 "Invalid input format. Please enter an expression like '10 + 5' or '+ 5'."
+//      - 如果 error_type 是 "DIVISION_BY_ZERO": 输出 "Error: Division by zero is not allowed."
+//      - 如果有其他错误类型，输出通用错误信息。
+
+// -- MCCP 特有元素示例 --
+
+// 结构化注释定义示例 (用于常见的输入提示):
+#define PROMPT_MESSAGE:
+{
+// 这是给开发者看的输入提示格式说明。
+// 提示符应为 "> "
+@ 请确保在显示用户输入提示时，使用标准的 '>' 符号，后跟一个空格。
+}
+
+// 结构化注释使用示例 (在 main_loop 流程中):
+// 在循环开始时:
+// 调用输出显示模块显示欢迎信息。
+// # PROMPT_MESSAGE
+// 调用输出显示模块显示输入提示符和使用说明。
+
+// 宏定义示例 (虽然本例简单，但体现概念):
+// 定义一个常量表示除零检查的浮点数容差 (conceptually)
+#define FLOAT_TOLERANCE: 0.000001
+// @ 模型：在进行除零检查时，使用此容差值与零进行比较。
+
+// 在 calculate 函数的除法分支中 (conceptually):
+// ...
+// 如果 operator 是 '/':
+//   如果 abs(operand2) < # FLOAT_TOLERANCE:
+//     标记为除零错误 ("DIVISION_BY_ZERO")
+//   否则:
+//     执行除法
+
+// -- 总结 --
+// 本文件详细描述了命令行计算器应用的行为逻辑、结构和关键组件。
+// 这些描述将作为生成 mccp_symbols.json 和 calculator_app.mccp_p 文件的基础。
+// 确保符号表准确记录本文件中定义的所有函数、变量和宏概念。

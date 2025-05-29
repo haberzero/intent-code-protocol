@@ -1,0 +1,81 @@
+{
+    "global": {
+        "var": [
+            "CONSTANT_FLOAT_TOLERANCE"
+        ],
+        "class": [],
+        "func": []
+    },
+    "calculator_app_pseudocode": {
+        "path": "demo_projects/demo2_calculator_app/calculator_app.mccp_p",
+        "file_depend": "",
+        "structure_ParseResult": {
+            "var": [
+                "success",
+                "operand1",
+                "operator",
+                "operand2",
+                "error_type"
+            ]
+        },
+        "structure_CalculationResult": {
+            "var": [
+                "success",
+                "result",
+                "error_type"
+            ]
+        },
+        "func_main_loop": {
+            "var": [
+                "last_result",
+                "current_input",
+                "parsed_data",
+                "calc_result"
+            ]
+        },
+        "func_get_user_input": {
+            "var": [
+                "input_string"
+            ]
+        },
+        "func_parse_expression": {
+            "var": [
+                "result",
+                "trimmed_input",
+                "parts",
+                "part1",
+                "part2",
+                "part3",
+                "num1_parsed",
+                "num2_parsed",
+                "temp_operand1",
+                "temp_operand2"
+            ]
+        },
+        "func_is_valid_operator": {
+            "var": []
+        },
+        "func_is_valid_float": {
+            "var": []
+        },
+        "func_calculate": {
+            "var": [
+                "result"
+            ]
+        },
+        "func_display_result": {
+            "var": [
+                "formatted_result_string"
+            ]
+        },
+        "func_handle_error": {
+            "var": []
+        },
+        "func_is_exit_command": {
+            "var": [
+                "trimmed_lower_input"
+            ]
+        },
+        "var": []
+    }
+}

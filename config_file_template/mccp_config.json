@@ -1,0 +1,19 @@
+{
+    "mccp_version": "0.1",
+    "project_name": "基础计算器应用",
+    "llm_used": "ExampleLLM-v2",
+    "target_language": "Python",
+    "dependencies": {
+      "standard_libraries": [],
+      "third_party_libraries": {},
+      "local_code_bases": [
+        {
+          "name": "AdvancedMathParser",
+          "version": "1.2.0",
+          "path": "internal_module_or_maven_central_placeholder"
+        }
+      ]
+    },
+    "build_settings": {}
+  }
+  
