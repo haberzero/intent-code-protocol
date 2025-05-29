@@ -1,4 +1,4 @@
-# MCCP (Model Context Code Protocol) 项目 （WORK IN PROGRESS !!）
+# MCCP - Model Context Code Protocol
 
 欢迎来到 MCCP 项目！本仓库包含了关于 MCCP 这一概念性软件开发框架的核心文档以及两个示例项目，旨在帮助您理解 MCCP 的理念、结构及其工作流程。
 
