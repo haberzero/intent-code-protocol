@@ -1,0 +1,60 @@
+{
+    "global": {},
+    "todo_app_file": {
+        "path": "demo_projects/demo1_todo_app/todo_app.mccp_p",
+        "var": [
+            "STATUS_COMPLETED",
+            "STATUS_PENDING",
+            "DATA_FILE_PATH",
+            "task_manager",
+            "data_storage"
+        ],
+        "class": {
+            "TaskManager": {
+                "func": [
+                    "__init__",
+                    "add_task",
+                    "get_tasks",
+                    "find_task_by_id",
+                    "mark_task_completed",
+                    "unmark_task_completed",
+                    "delete_task"
+                ],
+                "var": [
+                    "tasks_list",
+                    "next_task_id"
+                ]
+            },
+            "DataStorage": {
+                "func": [
+                    "__init__",
+                    "load_tasks",
+                    "save_tasks"
+                ],
+                "var": [
+                    "data_filepath"
+                ]
+            }
+        },
+        "func": {
+            "process_command": {
+                "var": [
+                    "command_string",
+                    "parts",
+                    "command_type",
+                    "command_args",
+                    "description",
+                    "new_task",
+                    "task_id_string",
+                    "task_id",
+                    "task_to_mark",
+                    "task_to_unmark",
+                    "found_index",
+                    "status_icon",
+                    "user_input",
+                    "keep_running"
+                ]
+            }
+        }
+    }
+}

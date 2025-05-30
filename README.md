@@ -48,7 +48,7 @@ MCCP 是在大语言模型大行其道的时代下，对传统软件开发的工
 *   [`todo_app.mccp_p`](./demo_projects/demo1_todo_app/todo_app.mccp_p)
     *   用途: 符号-伪代码层文件。根据行为描述层的内容生成，使用结构化的伪代码语法，描述了应用的具体实现逻辑，包括类定义、方法定义、函数定义、变量声明以及详细的控制流程。此层级非常接近实际代码结构，并引用了符号表中定义的符号。
 
-*   [`mccp_symbols.json`](./demo_projects/demo1_todo_app/mccp_symbols.json)
+*   [`mccp_symbols.json`](./demo_projects/demo1_todo_app/mccp_symbol.json)
     *   用途: 符号表文件。记录了项目中定义的所有关键符号（变量、类、函数、结构体）及其作用域信息。它是确保符号-伪代码层和最终代码生成中符号引用准确性的重要元数据。
 
 *   [`mccp_config.json`](./demo_projects/demo1_todo_app/mccp_config.json)

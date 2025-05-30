@@ -1,0 +1,14 @@
+{
+    "mccp_version": "0.1",
+    "project_name": "简易待办事项清单应用",
+    "llm_used": "ExampleLLM-v1",
+    "target_language": "Python",
+    "dependencies": {
+        "standard_libraries": [
+            "json"
+        ],
+        "third_party_libraries": {},
+        "local_code_bases": []
+    },
+    "build_settings": {}
+}
