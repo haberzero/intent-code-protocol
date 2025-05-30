@@ -2,9 +2,29 @@
 
 欢迎来到 MCCP 项目！本仓库包含了关于 MCCP 这一概念性软件开发框架的核心文档以及两个示例项目，旨在帮助您理解 MCCP 的理念、结构及其工作流程。
 
-Current Version: 0.0.1 
-
 This project is undergoing the most basic initial construction, and its content has a certain degree of uncertainty. We welcome anyone interested to participate
+
+Current Version: 0.0.1
+
+版本计划:
+
+* v0.0.1: 新建文件夹，包含基本文档和示例项目。主要文件由ai辅助生成，存在错误和格式问题。项目处于无demo，无法测试的阶段。
+
+v0.0.2: 语法问题修复。第一次定义完善，两个json配置文件定义完善并实现初步对齐
+
+v0.0.3: 正向构建功能初步实现
+
+v0.0.4: 真正实现第一个demo app（v0.0.1的demo为示意状态，并非实际构建的demo）, mccp的工程文件夹结构初步固定
+
+v0.0.5: 真正实现第二个demo app（v0.0.1的demo为示意状态，并非实际构建的demo）, mccp的工程文件夹结构进一步完善
+
+v0.1.0: 大更新，反向构建功能初步实现，mccp的工程文件夹结构进一步完善。（初步计划6月2日下午）
+
+v0.1.1: 完善反向构建，特别是反向构建过程中的符号定义表生成功能
+
+v0.1.2: 完善反向构建，无具体计划
+
+v0.2.1: 大更新，可正式初步实现正向/反向构建功能的稳定可控进行，可以进行第一次对外宣传。（初步计划6月3日晚）
 
 ## 1. MCCP 项目简介
 
