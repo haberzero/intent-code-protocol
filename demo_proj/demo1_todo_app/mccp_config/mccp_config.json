@@ -1,0 +1,15 @@
+{
+  "projectName": "Simple Todo App",
+  "mccpVersion": "0.0.1",
+  "targetLanguage": "Python",
+  "targetModel": "default_mccp_model",
+  "dependencies": [
+    "json"
+  ],
+  "buildSettings": {
+
+
+
+
+  }
+}

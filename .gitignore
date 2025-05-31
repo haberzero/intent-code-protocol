@@ -1,0 +1,38 @@
+# Generic .gitignore placeholder
+# Add files/directories to ignore in Git version control
+
+# Byte-code files
+*.pyc
+__pycache__/
+
+# C/C++ build artifacts
+*.o
+*.so
+*.dll
+*.exe
+*.obj
+*.lib
+*.a
+*.out
+
+# Temporary files
+temp/
+tmp/
+*.tmp
+*.log
+
+# IDE specific files (example for popular IDEs)
+.idea/
+.vscode/
+*.swp
+*~
+
+# MCCP generated files (consider ignoring src_target if fully generated)
+# src_target/
+
+# Configuration files that might contain sensitive info (handle carefully)
+# config/*.local.json
+
+# User-specific settings
+.DS_Store # macOS
+Thumbs.db # Windows

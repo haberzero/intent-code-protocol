@@ -1,0 +1,24 @@
+{
+  "projectName": "Basic Calculator App",
+  "mccpVersion": "0.0.1",
+  "targetLanguage": "C",
+  "targetModel": "default_mccp_model",
+  "dependencies": [
+
+
+  ],
+  "buildSettings": {
+
+
+    "compilerFlags": "-Wall -Wextra -pedantic",
+    "linkerFlags": ""
+  },
+  "fileSpecificSettings": [
+
+
+  ],
+  "symbolSpecificSettings": [
+
+
+  ]
+}

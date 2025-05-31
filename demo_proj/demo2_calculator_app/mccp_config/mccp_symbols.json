@@ -1,0 +1,242 @@
+{
+  "project_symbols": {
+    "project_name": "demo2_calculator_app",
+    "global_symbols": [],
+    "files": [
+      {
+        "file_identifier": "main_program",
+        "file_path_hint": "src_target/demo_projects/demo2_calculator_app/main.c",
+        "file_symbols": [
+          {
+            "name": "APP_EXIT_FLAG",
+            "type": "Boolean",
+            "scope": "file",
+            "description": "Flag controlling the main application loop"
+          },
+          {
+            "name": "USER_INPUT_BUFFER",
+            "type": "String",
+            "scope": "file",
+            "description": "Buffer to store user input string"
+          },
+          {
+            "name": "CALCULATION_RESULT",
+            "type": "Double",
+            "scope": "file",
+            "description": "Variable to store the result returned by the calculator logic"
+          },
+           {
+            "name": "CALCULATION_STATUS",
+            "type": "Integer",
+            "scope": "file",
+            "description": "Variable to store the status code (success/error) returned by the calculator logic"
+          },
+          {
+            "name": "main",
+            "type": "Function",
+            "scope": "file",
+            "description": "Main entry point of the application",
+            "parameters": [],
+            "return_type": "Integer"
+          },
+          {
+             "name": "display_calculator_menu",
+             "type": "Function",
+             "scope": "file",
+             "description": "Displays the main menu or prompt for the calculator",
+             "parameters": [],
+             "return_type": "Void"
+          },
+          {
+             "name": "display_message",
+             "type": "Function",
+             "scope": "file",
+             "description": "Displays a generic message to the user",
+             "parameters": [
+                {"name": "message", "type": "ConstString"}
+             ],
+             "return_type": "Void"
+          }
+        ]
+      },
+      {
+        "file_identifier": "calculator_logic",
+        "file_path_hint": "src_target/demo_projects/demo2_calculator_app/calculator.c",
+         "file_symbols": [
+          {
+            "name": "CURRENT_CALCULATOR_VALUE",
+            "type": "Double",
+            "scope": "file_static",
+            "description": "Holds the result of the last successful calculation for continuous operations"
+          },
+          {
+            "name": "LAST_OPERATOR_USED",
+            "type": "Character",
+            "scope": "file_static",
+            "description": "Holds the last operator used, for potential future features (not strictly needed for current continuous logic)"
+          },
+
+           {
+            "name": "ERROR_CODE_SUCCESS",
+            "type": "Constant Integer",
+            "scope": "file",
+            "description": "Status code indicating successful operation",
+            "value_hint": "0"
+          },
+          {
+            "name": "ERROR_CODE_DIVISION_BY_ZERO",
+            "type": "Constant Integer",
+            "scope": "file",
+            "description": "Status code indicating division by zero error",
+            "value_hint": "1"
+          },
+          {
+            "name": "ERROR_CODE_INVALID_INPUT",
+            "type": "Constant Integer",
+            "scope": "file",
+            "description": "Status code indicating invalid input format error",
+            "value_hint": "2"
+          },
+           {
+            "name": "ERROR_CODE_UNKNOWN_ERROR",
+            "type": "Constant Integer",
+            "scope": "file",
+            "description": "Status code indicating a generic unknown error",
+            "value_hint": "99"
+          },
+
+          {
+             "name": "ERROR_MSG_DIVISION_BY_ZERO",
+             "type": "Constant ConstString",
+             "scope": "file",
+             "description": "Error message for division by zero"
+          },
+          {
+             "name": "ERROR_MSG_INVALID_INPUT",
+             "type": "Constant ConstString",
+             "scope": "file",
+             "description": "Error message for invalid input format"
+          },
+          {
+             "name": "ERROR_MSG_UNKNOWN_ERROR",
+             "type": "Constant ConstString",
+             "scope": "file",
+             "description": "Error message for an unknown error"
+          },
+
+          {
+            "name": "parse_expression",
+            "type": "Function",
+            "scope": "file_static", // Internal linkage
+            "description": "Internal helper to parse the mathematical expression string",
+             "parameters": [
+                {"name": "InputString", "type": "ConstString"},
+                {"name": "Operand1", "type": "PointerTo Double"},
+                {"name": "Operator", "type": "PointerTo Character"},
+                {"name": "Operand2", "type": "PointerTo Double"},
+                {"name": "IsContinuous", "type": "PointerTo Integer"}
+             ],
+            "return_type": "Integer" // Returns status code
+          },
+          {
+            "name": "perform_operation",
+            "type": "Function",
+            "scope": "file_static", // Internal linkage
+            "description": "Internal helper to perform a specific arithmetic operation",
+             "parameters": [
+                {"name": "Operand1", "type": "Double"},
+                {"name": "Operator", "type": "Character"},
+                {"name": "Operand2", "type": "Double"},
+                {"name": "Result", "type": "PointerTo Double"}
+             ],
+            "return_type": "Integer" // Returns status code
+          },
+
+           {
+            "name": "process_expression",
+            "type": "Function",
+            "scope": "file", // External linkage (public)
+            "description": "Processes a mathematical expression string, performs calculation, updates state, returns result/status",
+             "parameters": [
+                {"name": "InputString", "type": "ConstString"},
+                {"name": "ResultRef", "type": "PointerTo Double"},
+                {"name": "StatusRef", "type": "PointerTo Integer"}
+             ],
+            "return_type": "Void"
+          }
+        ]
+      },
+       {
+        "file_identifier": "calculator_header",
+        "file_path_hint": "src_target/demo_projects/demo2_calculator_app/calculator.h",
+         "file_symbols": [
+
+             {
+                "name": "ERROR_CODE_SUCCESS",
+                "type": "Constant Integer",
+                "scope": "public", // Publicly visible
+                "description": "Status code indicating successful operation",
+                "value_hint": "0"
+              },
+              {
+                "name": "ERROR_CODE_DIVISION_BY_ZERO",
+                "type": "Constant Integer",
+                "scope": "public",
+                "description": "Status code indicating division by zero error",
+                "value_hint": "1"
+              },
+              {
+                "name": "ERROR_CODE_INVALID_INPUT",
+                "type": "Constant Integer",
+                "scope": "public",
+                "description": "Status code indicating invalid input format error",
+                "value_hint": "2"
+              },
+               {
+                "name": "ERROR_CODE_UNKNOWN_ERROR",
+                "type": "Constant Integer",
+                "scope": "public",
+                "description": "Status code indicating a generic unknown error",
+                "value_hint": "99"
+              },
+
+              {
+                 "name": "ERROR_MSG_DIVISION_BY_ZERO",
+                 "type": "Constant ConstString",
+                 "scope": "public",
+                 "description": "Error message for division by zero"
+              },
+              {
+                 "name": "ERROR_MSG_INVALID_INPUT",
+                 "type": "Constant ConstString",
+                 "scope": "public",
+                 "description": "Error message for invalid input format"
+              },
+              {
+                 "name": "ERROR_MSG_UNKNOWN_ERROR",
+                 "type": "Constant ConstString",
+                 "scope": "public",
+                 "description": "Error message for an unknown error"
+              },
+
+              {
+                "name": "process_expression",
+                "type": "Function",
+                "scope": "public", // Publicly visible
+                "description": "Processes a mathematical expression string, performs calculation, updates state, returns result/status",
+                 "parameters": [
+                    {"name": "InputString", "type": "ConstString"},
+                    {"name": "ResultRef", "type": "PointerTo Double"},
+                    {"name": "StatusRef", "type": "PointerTo Integer"}
+                 ],
+                "return_type": "Void"
+              }
+         ]
+       }
+    ]
+  },
+  "metadata": {
+    "description": "MCCP demo2_calculator_app project symbols, defining variables, functions, and constants for the calculator.",
+    "version": "1.0"
+  }
+}

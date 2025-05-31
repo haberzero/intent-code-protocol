@@ -1,0 +1,210 @@
+// File: src_mpc/demo_projects/demo1_todo_app/todo_app_py.mpc
+
+
+
+
+
+
+SYMBOL TASKS_LIST : List of Task objects
+SYMBOL DATA_FILE_PATH : String representing path to task data file
+SYMBOL PROGRAM_EXIT_FLAG : Boolean flag controlling main application loop
+
+
+
+STRUCT Task:
+  SYMBOL TASK_ID : Integer, unique identifier for task
+  SYMBOL TASK_DESCRIPTION : String, text of the task
+  SYMBOL TASK_STATUS : Enum (PENDING, DONE), current status of task
+
+
+SYMBOL LOAD_TASKS_FROM_FILE_FUNC : Function to load tasks from DATA_FILE_PATH
+SYMBOL SAVE_TASKS_TO_FILE_FUNC : Function to save tasks to DATA_FILE_PATH
+SYMBOL DISPLAY_MENU_FUNC : Function to display user options
+SYMBOL GET_USER_INPUT_FUNC : Function to get user command string
+SYMBOL HANDLE_COMMAND_FUNC : Function to process user command
+SYMBOL ADD_TASK_FUNC : Function to add a new task
+SYMBOL VIEW_TASKS_FUNC : Function to display all tasks
+SYMBOL DELETE_TASK_BY_ID_FUNC : Function to delete task by ID
+SYMBOL MARK_TASK_DONE_BY_ID_FUNC : Function to mark task as done by ID
+SYMBOL FIND_TASK_INDEX_BY_ID_FUNC : Helper function to find list index from task ID
+SYMBOL DISPLAY_MESSAGE_FUNC : Function to display messages to user (e.g., errors, confirmations)
+
+
+
+PROCEDURE MAIN_PROGRAM():
+
+  SET PROGRAM_EXIT_FLAG = FALSE
+  SET TASKS_LIST = EMPTY_LIST
+  SET DATA_FILE_PATH = "tasks.json" // Example path
+
+
+  CALL LOAD_TASKS_FROM_FILE_FUNC(DATA_FILE_PATH, TASKS_LIST)
+  IF TASKS_LIST IS NULL OR ERROR:
+    SET TASKS_LIST = EMPTY_LIST // Ensure list is initialized even if load fails
+
+
+  WHILE PROGRAM_EXIT_FLAG IS FALSE:
+    CALL DISPLAY_MENU_FUNC()
+    SYMBOL USER_COMMAND_VAR : String
+    SET USER_COMMAND_VAR = CALL GET_USER_INPUT_FUNC()
+
+
+    CALL HANDLE_COMMAND_FUNC(USER_COMMAND_VAR, TASKS_LIST, PROGRAM_EXIT_FLAG)
+
+
+  CALL SAVE_TASKS_TO_FILE_FUNC(DATA_FILE_PATH, TASKS_LIST)
+  CALL DISPLAY_MESSAGE_FUNC("Application exiting. Tasks saved.")
+
+
+
+PROCEDURE HANDLE_COMMAND_FUNC(COMMAND, TASKS_LIST, PROGRAM_EXIT_FLAG_REF):
+  SWITCH COMMAND:
+    CASE "add":
+      SYMBOL TASK_DESCRIPTION_VAR : String
+      CALL DISPLAY_MESSAGE_FUNC("Enter task description:")
+      SET TASK_DESCRIPTION_VAR = CALL GET_USER_INPUT_FUNC()
+      IF TASK_DESCRIPTION_VAR IS NOT EMPTY:
+        CALL ADD_TASK_FUNC(TASKS_LIST, TASK_DESCRIPTION_VAR)
+        CALL DISPLAY_MESSAGE_FUNC("Task added.")
+      ELSE:
+        CALL DISPLAY_MESSAGE_FUNC("Task description cannot be empty.")
+
+    CASE "view":
+      CALL VIEW_TASKS_FUNC(TASKS_LIST)
+
+    CASE "delete":
+      SYMBOL TASK_ID_INPUT_VAR : String
+      CALL DISPLAY_MESSAGE_FUNC("Enter task ID to delete:")
+      SET TASK_ID_INPUT_VAR = CALL GET_USER_INPUT_FUNC()
+      SYMBOL TASK_ID_VAR : Integer
+      TRY_PARSE TASK_ID_INPUT_VAR TO TASK_ID_VAR:
+        IF PARSE_SUCCESSFUL:
+          CALL DELETE_TASK_BY_ID_FUNC(TASKS_LIST, TASK_ID_VAR)
+        ELSE:
+          CALL DISPLAY_MESSAGE_FUNC("Invalid Task ID.")
+      CATCH PARSE_ERROR:
+        CALL DISPLAY_MESSAGE_FUNC("Invalid input. Please enter a number.")
+
+    CASE "done":
+      SYMBOL TASK_ID_INPUT_VAR : String
+      CALL DISPLAY_MESSAGE_FUNC("Enter task ID to mark as done:")
+      SET TASK_ID_INPUT_VAR = CALL GET_USER_INPUT_FUNC()
+      SYMBOL TASK_ID_VAR : Integer
+      TRY_PARSE TASK_ID_INPUT_VAR TO TASK_ID_VAR:
+        IF PARSE_SUCCESSFUL:
+          CALL MARK_TASK_DONE_BY_ID_FUNC(TASKS_LIST, TASK_ID_VAR)
+        ELSE:
+          CALL DISPLAY_MESSAGE_FUNC("Invalid Task ID.")
+      CATCH PARSE_ERROR:
+        CALL DISPLAY_MESSAGE_FUNC("Invalid input. Please enter a number.")
+
+    CASE "exit":
+      SET PROGRAM_EXIT_FLAG_REF = TRUE // Modify the referenced flag
+
+    DEFAULT:
+      CALL DISPLAY_MESSAGE_FUNC("Unknown command. Please try again.")
+
+
+
+PROCEDURE LOAD_TASKS_FROM_FILE_FUNC(FILE_PATH, TASKS_LIST_REF):
+  TRY:
+    OPEN FILE_PATH FOR READING
+    READ CONTENT FROM FILE
+    PARSE CONTENT AS JSON
+    IF PARSING SUCCESSFUL:
+      SET TASKS_LIST_REF = PARSED_DATA // Assuming data format matches TASKS_LIST structure
+    ELSE:
+      CALL DISPLAY_MESSAGE_FUNC("Error parsing task data.")
+      SET TASKS_LIST_REF = EMPTY_LIST // Initialize as empty on parse error
+  CATCH FILE_NOT_FOUND_ERROR:
+    CALL DISPLAY_MESSAGE_FUNC("Task data file not found. Starting with empty list.")
+    SET TASKS_LIST_REF = EMPTY_LIST // Initialize as empty if file doesn't exist
+  CATCH OTHER_ERROR:
+    CALL DISPLAY_MESSAGE_FUNC("Error loading tasks from file.")
+    SET TASKS_LIST_REF = EMPTY_LIST // Initialize as empty on other errors
+
+PROCEDURE SAVE_TASKS_TO_FILE_FUNC(FILE_PATH, TASKS_LIST):
+  TRY:
+    SERIALIZE TASKS_LIST TO JSON FORMAT
+    OPEN FILE_PATH FOR WRITING
+    WRITE JSON_DATA TO FILE
+    CLOSE FILE
+  CATCH ERROR:
+    CALL DISPLAY_MESSAGE_FUNC("Error saving tasks to file.")
+
+PROCEDURE ADD_TASK_FUNC(TASKS_LIST_REF, DESCRIPTION):
+  SYMBOL NEW_TASK : Task
+  SET NEW_TASK.TASK_ID = GENERATE_UNIQUE_TASK_ID() // Needs a helper function/counter
+  SET NEW_TASK.TASK_DESCRIPTION = DESCRIPTION
+  SET NEW_TASK.TASK_STATUS = SYMBOL TASK_STATUS_ENUM.PENDING
+  APPEND NEW_TASK TO TASKS_LIST_REF
+
+
+PROCEDURE VIEW_TASKS_FUNC(TASKS_LIST):
+  IF TASKS_LIST IS EMPTY:
+    CALL DISPLAY_MESSAGE_FUNC("No tasks found.")
+    RETURN
+
+  CALL DISPLAY_MESSAGE_FUNC("--- Your Tasks ---")
+  FOR EACH TASK IN TASKS_LIST:
+    SYMBOL STATUS_STRING : String
+    IF TASK.TASK_STATUS IS SYMBOL TASK_STATUS_ENUM.DONE:
+      SET STATUS_STRING = "[DONE]"
+    ELSE:
+      SET STATUS_STRING = "[ ]"
+    DISPLAY FORMATTED_STRING(TASK.TASK_ID, STATUS_STRING, TASK.TASK_DESCRIPTION) // e.g., "ID [Status] Description"
+  CALL DISPLAY_MESSAGE_FUNC("-----------------")
+
+PROCEDURE DELETE_TASK_BY_ID_FUNC(TASKS_LIST_REF, TARGET_ID):
+  SYMBOL FOUND_INDEX : Integer
+  SET FOUND_INDEX = CALL FIND_TASK_INDEX_BY_ID_FUNC(TASKS_LIST_REF, TARGET_ID)
+
+  IF FOUND_INDEX IS NOT -1 (or NOT_FOUND):
+    REMOVE ITEM AT FOUND_INDEX FROM TASKS_LIST_REF
+    CALL DISPLAY_MESSAGE_FUNC("Task with ID " + TARGET_ID + " deleted.")
+  ELSE:
+    CALL DISPLAY_MESSAGE_FUNC("Task with ID " + TARGET_ID + " not found.")
+
+PROCEDURE MARK_TASK_DONE_BY_ID_FUNC(TASKS_LIST_REF, TARGET_ID):
+  SYMBOL FOUND_INDEX : Integer
+  SET FOUND_INDEX = CALL FIND_TASK_INDEX_BY_ID_FUNC(TASKS_LIST_REF, TARGET_ID)
+
+  IF FOUND_INDEX IS NOT -1 (or NOT_FOUND):
+    SET TASKS_LIST_REF[FOUND_INDEX].TASK_STATUS = SYMBOL TASK_STATUS_ENUM.DONE
+    CALL DISPLAY_MESSAGE_FUNC("Task with ID " + TARGET_ID + " marked as done.")
+  ELSE:
+    CALL DISPLAY_MESSAGE_FUNC("Task with ID " + TARGET_ID + " not found.")
+
+PROCEDURE FIND_TASK_INDEX_BY_ID_FUNC(TASKS_LIST, TARGET_ID):
+  FOR INDEX FROM 0 TO LENGTH(TASKS_LIST) - 1:
+    IF TASKS_LIST[INDEX].TASK_ID IS EQUAL TO TARGET_ID:
+      RETURN INDEX
+  RETURN -1 // Indicates not found
+
+
+
+PROCEDURE DISPLAY_MENU_FUNC():
+  DISPLAY "--- To-Do App Menu ---"
+  DISPLAY "add - Add a new task"
+  DISPLAY "view - View all tasks"
+  DISPLAY "delete - Delete a task by ID"
+  DISPLAY "done - Mark a task as done by ID"
+  DISPLAY "exit - Exit the application"
+  DISPLAY "----------------------"
+  DISPLAY "Enter command:"
+
+PROCEDURE GET_USER_INPUT_FUNC():
+  READ LINE FROM STANDARD_INPUT
+  RETURN READ_LINE_RESULT
+
+PROCEDURE DISPLAY_MESSAGE_FUNC(MESSAGE):
+  PRINT MESSAGE TO STANDARD_OUTPUT
+
+PROCEDURE GENERATE_UNIQUE_TASK_ID():
+
+
+
+  RETURN ARBITRARY_UNIQUE_ID // Placeholder
+
+
+CALL MAIN_PROGRAM()

@@ -1,137 +1,93 @@
-# MCCP - Model Context Code Protocol
+### 修订后的 README.md 内容
 
-欢迎来到 MCCP 项目！本仓库包含了关于 MCCP 这一概念性软件开发框架的核心文档以及两个示例项目，旨在帮助您理解 MCCP 的理念、结构及其工作流程。
+**MCCP - Model Context Code Protocol**
 
-This project is undergoing the most basic initial construction, and its content has a certain degree of uncertainty. We welcome anyone interested to participate
+欢迎来到 MCCP 项目！本仓库包含了关于 MCCP 这一概念性软件开发框架的核心文档以及示例项目，旨在帮助您理解 MCCP 的理念、结构及其工作流程。
 
-Current Version: 0.0.1
+> 本项目正处于基础的初始构建阶段，内容存在一定程度的不确定性。我们欢迎任何感兴趣的人士参与。
 
-版本计划:
+当前版本: **0.0.1**
 
-* v0.0.1: 新建文件夹，包含基本文档和示例项目。主要文件由ai辅助生成，存在错误和格式问题。项目处于无demo，无法测试的阶段。
+**版本计划:**
 
-v0.0.2: 语法问题修复。第一次定义完善，两个json配置文件定义完善并实现初步对齐
+*   **v0.0.1:** 新建仓库，包含基础文档和示例项目概念。主要文件由AI辅助生成，可能存在语法和格式问题。项目处于演示结构阶段，尚未实现完整的正向/反向构建和可运行Demo。
+*   **v0.0.2:** 修复现有文档的语法问题，完善 `mccp_config.json` 和 `mccp_symbols.json` 的初步定义，并使现有示例文件初步对齐定义。
+*   **v0.0.3:** 初步实现MCCP的正向构建功能（从MCCP层文件生成目标代码）。
+*   **v0.0.4:** 基于新的标准工程文件夹结构，构建并实现第一个可运行的Demo应用（取代v0.0.1中的示意Demo）。MCCP的工程文件夹结构初步固定。
+*   **v0.0.5:** 基于新的标准工程文件夹结构，构建并实现第二个可运行的Demo应用。MCCP的工程文件夹结构进一步完善。
+*   **v0.1.0:** 大更新，初步实现反向构建功能（从目标代码生成MCCP层文件）。MCCP的工程文件夹结构进一步完善。（初步计划6月2日下午）
+*   **v0.1.1:** 完善反向构建功能，特别是反向构建过程中的符号定义表生成功能。
+*   **v0.1.2:** 进一步完善反向构建功能，具体计划待定。
+*   **v0.2.1:** 大更新，实现正向/反向构建功能的稳定可控运行，可以进行第一次对外宣传。（初步计划6月3日晚）
 
-v0.0.3: 正向构建功能初步实现
+**1. MCCP 项目简介**
 
-v0.0.4: 真正实现第一个demo app（v0.0.1的demo为示意状态，并非实际构建的demo）, mccp的工程文件夹结构初步固定
+MCCP (Model Context Code Protocol) 是一个构想，是一种多层次的半自然语言编程描述系统，亦或者说是一种提示词协议。它并非一门新的编程语言，也永远不应该成为可以直接“运行”或“编译”的编程语言。其设计的核心理念在于成为一种**超级中间件**，旨在让大语言模型能够与这个世界上的任何编程语言进行“精确化、可信化、可控化沟通”。
 
-v0.0.5: 真正实现第二个demo app（v0.0.1的demo为示意状态，并非实际构建的demo）, mccp的工程文件夹结构进一步完善
+MCCP 具备**三层抽象层**：自然语言提示词层、行为描述层、符号-伪代码层，三层抽象层具备各自的分工，并成为连接传统编程语言和大模型的桥梁。通过引入 MCCP，大模型生成的代码将更加**稳定可控**，且允许开发人员在多个抽象层次进行**精细、高效的修改**。每一层级的修改应能同步关联影响到其它层级的内容。
 
-v0.1.0: 大更新，反向构建功能初步实现，mccp的工程文件夹结构进一步完善。（初步计划6月2日下午）
-
-v0.1.1: 完善反向构建，特别是反向构建过程中的符号定义表生成功能
-
-v0.1.2: 完善反向构建，无具体计划
-
-v0.2.1: 大更新，可正式初步实现正向/反向构建功能的稳定可控进行，可以进行第一次对外宣传。（初步计划6月3日晚）
-
-## 1. MCCP 项目简介
-
-MCCP (Model Context Code Protocol) 是一个构想，是一种多层次的半自然语言编程描述系统，亦或者说是一种提示词协议。它并非一门新的编程语言，也永远不应该成为可以直接“运行”或“编译”的编程语言。其设计的核心理念在于成为一种超级中间件，旨在让大语言模型能够与这个世界上的任何编程语言进行“精确化、可信化、可控化沟通”。
-
-MCCP 具备三层抽象层: 自然语言提示词层、行为描述层、符号-伪代码层，三层抽象层具备各自的分工，并成为连接传统编程语言和大模型的桥梁。通过引入 MCCP，大模型生成的代码将更加稳定可控，且允许开发人员在多个抽象层次进行精细、高效的修改。每一层级的修改将同时关联影响到其它层级的内容。
-
-MCCP 从诞生之初就注定了它的快速演进性质，将跟随大模型本身的进化而快速发展，也就注定了无法也不应该形成过于僵硬的语法规定。其中的工程哲学远比语法定义本身要重要。
+MCCP 从诞生之初就注定了它的快速演进性质，将跟随大模型本身的进化而快速发展，也就注定了无法也不应该形成过于僵硬的语法规定。其中的**工程哲学**远比语法定义本身要重要。
 
 MCCP 是在大语言模型大行其道的时代下，对传统软件开发的工程构建方法论的拆解重构，旨在改变未来的软件开发范式，真正允许开发者能够将有限的精力更专注于高层级的需求分析、系统设计和行为规划，将繁琐的、低层级的代码实现细节交给大模型。
 
-## 2. 关键文档概览
+**2. 关键文档概览**
 
 本仓库包含以下核心定义文档，它们详细阐述了 MCCP 的各个组成部分：
 
-*   [`MCCP_Documentation.md`](./MCCP_Documentation.md)
+*   [`MCCP_Documentation.md`](./docs/MCCP_Documentation.md)
     *   用途: MCCP 的核心概念文档，详细介绍了 MCCP 的愿景、核心理念、三个抽象层级（自然语言提示词层、行为描述层、符号-伪代码层）、基本功能特征（层级修改反应、兼容性描述文件、符号表、结构化注释、宏定义）以及反向构建过程。它是理解 MCCP 全貌的起点。
 
-*   [`symbol_table_definition.md`](./symbol_table_definition.md)
+*   [`symbol_table_definition.md`](./docs/symbol_table_definition.md)
     *   用途: 符号表定义文档，详细解释了 MCCP 符号表 (`mccp_symbols.json`) 的目的、重要性、JSON 结构示例及其关键字段的定义与用途（包括全局符号、文件内符号、类及函数内部符号）。该文档强调了符号表在确保符号引用可信性，以及跨层级、跨模型一致性等方面的作用。
 
-*   [`compatibility_file_definition.md`](./compatibility_table_definition.md)
+*   [`compatibility_file_definition.md`](./docs/compatibility_table_definition.md)
     *   用途: 兼容性描述文件定义文档，详细解释了 MCCP 配置文件 (`mccp_config.json`) 的目的、JSON 结构及其核心字段的定义与用途（包括目标大模型、目标编程语言、依赖库/源代码库、MCCP 版本、项目名称、构建设置）。该文件是一种工程描述文件，是MCCP确保项目构建的一致性、可预测性和兼容性的关键配置描述文件。
 
-## 3. 示例项目
+**3. 示例项目**
 
-目前，本仓库提供了两个完整的 MCCP 示例项目，用于演示 MCCP 工程中符号表和配置文件的使用，以及从自然语言需求，到行为描述层，再到符号-伪代码层，最后到实际可执行代码的完整工程构建流程。
+本仓库目前提供了两个概念性的 MCCP 示例项目，它们旨在演示 MCCP 工程中符号表和配置文件的使用，以及从自然语言需求，到行为描述层，再到符号-伪代码层，最后到实际可执行代码的完整工程构建流程。这些示例项目正逐步按照新的标准工程文件夹结构进行重构。
 
-### a. 简易待办事项清单应用 (`demo1_todo_app`)
+关于示例项目文件的具体组织方式和内容，请参考单独的分析和重构文档，以及它们在仓库中的实际文件位置（未来将遵循新的标准结构）。每个示例项目都包含：
 
-这是一个基础的命令行待办事项应用，具备添加、查看、标记完成/未完成、删除任务以及数据持久化等功能。它是 MCCP 的第一个示例项目，旨在演示 MCCP 如何将自然语言需求转化为结构化的行为和伪代码。
+*   `requirements.md`: 项目的自然语言需求描述。
+*   `.mccp_b` 文件: 行为描述层文件，描述应用的高层行为和结构。
+*   `.mccp_p` 文件: 符号-伪代码层文件，描述应用的具体逻辑和实现细节。
+*   `mccp_symbols.json`: 项目的符号表，记录所有关键符号的元数据。
+*   `mccp_config.json`: 项目的兼容性配置文件，指定目标语言、模型、依赖等。
 
-项目文件位于 `./demo_projects/demo1_todo_app/` 目录下，包含以下文件：
+例如：
 
-*   [`requirements.md`](./demo_projects/demo1_todo_app/requirements.md)
-    *   用途: 自然语言需求描述。以人类易懂的语言描述了待办事项应用的各项功能需求、用户交互方式、错误处理以及启动退出流程。这是整个 MCCP 构建过程的起点。
+*   **简易待办事项清单应用 (`demo1_todo_app`)**: 一个基础的命令行待办事项应用。
+*   **基础计算器应用 (`demo2_calculator_app`)**: 一个基础的命令行计算器应用，支持基本运算和连续计算。
 
-*   [`todo_app.mccp_b`](./demo_projects/demo1_todo_app/todo_app.mccp_b)
-    *   用途: 行为描述层文件。基于自然语言需求，使用半自然语言描述了应用的软件基本构成框架、关键运行流程、初步定义的类/函数/变量及其作用，以及核心业务逻辑分支。该文件是生成符号表和符号-伪代码层的基础。
+**4. 项目结构说明**
 
-*   [`todo_app.mccp_p`](./demo_projects/demo1_todo_app/todo_app.mccp_p)
-    *   用途: 符号-伪代码层文件。根据行为描述层的内容生成，使用结构化的伪代码语法，描述了应用的具体实现逻辑，包括类定义、方法定义、函数定义、变量声明以及详细的控制流程。此层级非常接近实际代码结构，并引用了符号表中定义的符号。
-
-*   [`mccp_symbols.json`](./demo_projects/demo1_todo_app/mccp_symbol.json)
-    *   用途: 符号表文件。记录了项目中定义的所有关键符号（变量、类、函数、结构体）及其作用域信息。它是确保符号-伪代码层和最终代码生成中符号引用准确性的重要元数据。
-
-*   [`mccp_config.json`](./demo_projects/demo1_todo_app/mccp_config.json)
-    *   用途: 兼容性描述文件。指定了该 MCCP 工程的目标编程语言（Python）、预期使用的大模型、项目依赖库（如 json 标准库）等环境信息，指导代码生成过程。
-
-### b. 基础计算器应用 (`demo2_calculator_app`)
-
-这是一个基础的命令行计算器应用，支持加、减、乘、除基本运算，并包含连续计算和错误处理功能。它提供了另一个 MCCP 工作流程的示例。
-
-项目文件位于 `./demo_projects/demo2_calculator_app/` 目录下，包含以下文件：
-
-*   [`requirements.md`](./demo_projects/demo2_calculator_app/requirements.md)
-    *   用途: 自然语言需求描述。描述了计算器应用的功能需求、用户交互、错误处理（如除零、无效输入）以及退出方式。
-
-*   [`calculator_app.mccp_b`](./demo_projects/demo2_calculator_app/calculator_app.mccp_b)
-    *   用途: 行为描述层文件。定义了计算器应用的模块划分（输入获取、解析、计算、输出显示、错误处理、主控逻辑）、关键运行流程（主循环）以及初步设计的关键函数和变量。
-
-*   [`calculator_app.mccp_p`](./demo_projects/demo2_calculator_app/calculator_app.mccp_p)
-    *   用途: 符号-伪代码层文件。将行为描述转化为结构化伪代码，详细描述了输入解析逻辑（包括连续计算的解析）、运算分发、错误处理逻辑以及主循环的控制流程。
-
-*   [`mccp_symbols.json`](./demo_projects/demo2_calculator_app/mccp_symbols.json)
-    *   用途: 符号表文件。记录了计算器项目中使用的所有符号，包括全局常量、伪代码中定义的结构体、函数及其内部变量。
-
-*   [`mccp_config.json`](./demo_projects/demo2_calculator_app/mccp_config.json)
-    *   用途: 兼容性描述文件。指定了该计算器 MCCP 工程的目标语言、预期使用的大模型等配置信息。
-
-## 4. 项目结构说明
-
-推荐的项目文件夹组织结构如下所示：
+**本仓库** 的组织结构如下所示，包含文档、定义文件和示例项目目录：
 
 ```
-/
+/ (仓库根目录)
 ├── MCCP_Documentation.md         # MCCP 核心概念文档
 ├── symbol_table_definition.md    # 符号表定义文档
 ├── compatibility_file_definition.md # 兼容性文件定义文档
-├── demo_projects/                # 示例项目目录
-│   ├── demo1_todo_app/         # 简易待办事项清单应用示例
-│   │   ├── requirements.md     # 自然语言需求
-│   │   ├── todo_app.mccp_b     # 行为描述层文件
-│   │   ├── todo_app.mccp_p     # 符号-伪代码层文件
-│   │   ├── mccp_symbols.json   # 符号表
-│   │   └── mccp_config.json    # 兼容性文件
-│   └── demo2_calculator_app/   # 基础计算器应用示例
-│       ├── requirements.md     # 自然语言需求
-│       ├── calculator_app.mccp_b # 行为描述层文件
-│       ├── calculator_app.mccp_p # 符号-伪代码层文件
-│       ├── mccp_symbols.json   # 符号表
-│       └── mccp_config.json    # 兼容性文件
+├── demo_projects/                # 示例项目目录 (未来将按照新结构组织)
+│   ├── demo1_todo_app/         # 简易待办事项清单应用示例 (内容将重构至新结构)
+│   └── demo2_calculator_app/   # 基础计算器应用示例 (内容将重构至新结构)
 └── readme.md                     # 当前文件
+└── LICENSE                       # 项目许可证文件
+└── .gitignore                    # Git忽略文件配置
 ```
 
-## 5. 如何使用
+而一个标准的 **MCCP 项目**（如 `demo1_todo_app` 或 `demo2_calculator_app` 在完全重构后）应遵循**《MCCP 项目工程文件夹结构定义》**文档中所述的标准分层结构。这个标准结构主要包含根目录元信息、`src_mbh`、`src_mpc`、`src_target` 三个源文件目录以及 `config` 配置目录。示例项目将在其各自的目录 (`demo_projects/demoX/`) 下实现和展示这种标准结构。
+
+**5. 如何使用**
 
 要理解和使用这些 MCCP 材料，建议按照以下步骤进行：
 
-1.  阅读核心概念: 首先，从 [`MCCP_Documentation.md`](./MCCP_Documentation.md) 入手，理解 MCCP 的基本思想、分层结构和主要特征。
-2.  学习定义规范: 接着，阅读 [`symbol_table_definition.md`](./symbol_table_definition.md) 和 [`compatibility_file_definition.md`](./compatibility_table_definition.md)，了解 MCCP 中两个关键元数据文件的结构和作用。
-3.  探索示例项目: 选择一个示例项目（例如 `demo1_todo_app`）。
-    *   从 [`requirements.md`](./demo_projects/demo1_todo_app/requirements.md) 开始，理解应用的原始需求。
-    *   然后，查看 [`todo_app.mccp_b`](./demo_projects/demo1_todo_app/todo_app.mccp_b)，观察需求是如何被转化为结构化的行为描述和初步框架的。
-    *   接着，阅读 [`todo_app.mccp_p`](./demo_projects/demo1_todo_app/todo_app.mccp_p)，了解行为描述是如何进一步细化为结构化伪代码的。注意伪代码中使用的符号。
-    *   同时，查看 [`mccp_symbols.json`](./demo_projects/demo1_todo_app/mccp_symbols.json) 和 [`mccp_config.json`](./demo_projects/demo1_todo_app/mccp_config.json)，了解符号表和配置文件如何记录项目的元数据和环境信息。
-4.  比较层级: 对比同一个示例项目中不同层级的文件，理解信息是如何从抽象逐级具象化的。例如，对比 `requirements.md`、`.mccp_b` 和 `.mccp_p` 文件中对同一个功能的描述。
-5.  重复步骤 3 和 4: 探索另一个示例项目 (`demo2_calculator_app`)，加深理解。
+1.  **阅读核心概念**: 首先，从 `MCCP_Documentation.md` 入手，理解 MCCP 的基本思想、分层结构和主要特征。
+2.  **学习定义规范**: 接着，阅读 `symbol_table_definition.md` 和 `compatibility_file_definition.md`，了解 MCCP 中两个关键元数据文件的结构、作用以及与文件结构的关联。
+3.  **理解标准结构**: 查阅《MCCP 项目工程文件夹结构定义》（可能是一个独立的文档或包含在 `MCCP_Documentation.md` 中），理解推荐的项目文件组织方式。
+4.  **探索示例项目**: 选择一个示例项目（例如 `demo1_todo_app`）。在其对应的目录下，按照标准结构查找和阅读各层级文件（`requirements.md`，`src_mbh/...`，`src_mpc/...`）以及配置文件（`config/mccp_symbols.json`，`config/mccp_config.json`）。
+5.  **比较层级**: 对比同一个示例项目中不同层级的文件中对相同功能的描述，理解信息是如何从抽象逐级具象化的。
+6.  **实践（未来）**: 随着工具链的完善，尝试使用工具对示例项目进行正向构建或反向工程。
 
 通过循序渐进地阅读这些文档和示例文件，您将能逐步掌握 MCCP 的核心思想和工作方式。
