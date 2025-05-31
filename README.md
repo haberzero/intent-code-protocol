@@ -56,6 +56,9 @@ MCCP 是在大语言模型大行其道的时代下，对传统软件开发的工
 ## 4. 项目结构说明
 
 **本仓库** 的组织结构如下所示，包含文档、定义文件和示例项目目录：
+
+```
+
 /
 ├── docs/                          # 核心文档目录
 │   ├── MCCP_Documentation.md      # MCCP 核心概念文档
@@ -68,7 +71,12 @@ MCCP 是在大语言模型大行其道的时代下，对传统软件开发的工
 ├── LICENSE                        # 项目许可证文件
 └── .gitignore                     # Git忽略规则文件
 
+```
+
 **MCCP 工程** 一个标准的MCCP工程 （如 `demo1_todo_app` 或 `demo2_calculator_app`）应遵循标准分层结构：
+
+```
+
 /
 ├── requirements.md                # 自然语言需求描述
 ├── src_mcbh/                      # 行为描述层文件(.mcbh)
@@ -77,6 +85,8 @@ MCCP 是在大语言模型大行其道的时代下，对传统软件开发的工
 │   ├── mccp_symbols.json          # 符号表
 │   └── mccp_config.json           # 兼容性配置文件
 └── src_target/                    # 生成的目标代码文件
+
+```
 
 ## 5. 如何使用
 
