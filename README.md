@@ -32,13 +32,13 @@ MCCP 是在大语言模型大行其道的时代下，对传统软件开发的工
 
 本仓库包含以下核心定义文档，它们详细阐述了 MCCP 的各个组成部分：
 
-*   [`MCCP_Documentation.md`](./docs/MCCP_Documentation.md)
+*   [`mccp_documentation.md`](./docs/mccp_documentation.md)
     *   用途: MCCP 的核心概念文档，详细介绍了 MCCP 的愿景、核心理念、三个抽象层级（自然语言提示词层、行为描述层、符号-伪代码层）、基本功能特征（层级修改反应、兼容性描述文件、符号表、结构化注释、宏定义）以及反向构建过程。它是理解 MCCP 全貌的起点。
 
-*   [`symbol_table_definition.md`](./docs/symbol_table_definition.md)
+*   [`mccp_project_symbols_definition.md`](./docs/mccp_project_symbols_definition.md)
     *   用途: 符号表定义文档，详细解释了 MCCP 符号表 (`mccp_symbols.json`) 的目的、重要性、JSON 结构示例及其关键字段的定义与用途（包括全局符号、文件内符号、类及函数内部符号）。该文档强调了符号表在确保符号引用可信性，以及跨层级、跨模型一致性等方面的作用。
 
-*   [`compatibility_file_definition.md`](./docs/compatibility_table_definition.md)
+*   [`mccp_project_config_definition.md`](./docs/mccp_project_config_definition.md)
     *   用途: 兼容性描述文件定义文档，详细解释了 MCCP 配置文件 (`mccp_config.json`) 的目的、JSON 结构及其核心字段的定义与用途（包括目标大模型、目标编程语言、依赖库/源代码库、MCCP 版本、项目名称、构建设置）。该文件是一种工程描述文件，是MCCP确保项目构建的一致性、可预测性和兼容性的关键配置描述文件。
 
 ## 3. 示例项目
@@ -46,11 +46,11 @@ MCCP 是在大语言模型大行其道的时代下，对传统软件开发的工
 本仓库目前提供了两个概念性的 MCCP 示例项目，它们旨在演示 MCCP 工程中符号表和配置文件的使用，以及从自然语言需求，到行为描述层，再到符号-伪代码层，最后到实际可执行代码的完整工程构建流程。注：当前的demo_proj都是纯粹的演示性文件，MCCP构建器目前并没有被真正实现，所以它们并不具备真正的可执行性，且会在近几次更新中经历数次重构，具备高度不确定性，请谨慎参考。
 
 *   **简易待办事项清单应用 (`demo1_todo_app`)**:
-    *   位于 `./demo_projects/demo1_todo_app/` 目录
+    *   位于 `./demo_proj/demo1_todo_app/` 目录
     *   基础的命令行待办事项应用，具备添加、查看、标记完成/未完成、删除任务以及数据持久化等功能
     
 *   **基础计算器应用 (`demo2_calculator_app`)**:
-    *   位于 `./demo_projects/demo2_calculator_app/` 目录
+    *   位于 `./demo_proj/demo2_calculator_app/` 目录
     *   基础的命令行计算器应用，支持加、减、乘、除基本运算，并包含连续计算和错误处理功能
 
 ## 4. 项目结构说明
@@ -92,8 +92,8 @@ MCCP 是在大语言模型大行其道的时代下，对传统软件开发的工
 
 要理解和使用这些 MCCP 材料，建议按照以下步骤进行：
 
-1.  **阅读核心概念**: 首先，从 [`MCCP_Documentation.md`](./docs/MCCP_Documentation.md) 入手，理解 MCCP 的基本思想、分层结构和主要特征。
-2.  **学习定义规范**: 接着，阅读 [`symbol_table_definition.md`](./docs/symbol_table_definition.md) 和 [`compatibility_file_definition.md`](./docs/compatibility_table_definition.md)，了解 MCCP 中两个关键元数据文件的结构、作用以及与文件结构的关联。
+1.  **阅读核心概念**: 首先，从 [`mccp_documentation.md`](./docs/mccp_documentation.md) 入手，理解 MCCP 的基本思想、分层结构和主要特征。
+2.  **学习定义规范**: 接着，阅读 [`mccp_project_symbols_definition.md`](./docs/mccp_project_symbols_definition.md) 和 [`mccp_project_config_definition.md`](./docs/mccp_project_config_definition.md)，了解 MCCP 中两个关键元数据文件的结构、作用以及与文件结构的关联。
 3.  **理解标准结构**: 查阅文档理解推荐的项目文件组织方式。
 4.  **探索示例项目**: 选择一个示例项目（例如 `demo1_todo_app`）。在其对应的目录下，按照标准结构查找和阅读各层级文件：
     *   从 `requirements.md` 开始，理解应用的原始需求
@@ -103,5 +103,6 @@ MCCP 是在大语言模型大行其道的时代下，对传统软件开发的工
 5.  **比较层级**: 对比同一个示例项目中不同层级的文件，理解信息是如何从抽象逐级具象化的。例如，对比 `requirements.md`、`.mcbh` 和 `.mcpc` 文件中对同一个功能的描述。
 6.  **重复探索步骤**: 探索另一个示例项目 (`demo2_calculator_app`)，加深理解。
 7.  **实践（未来）**: 随着工具链的完善，尝试使用工具对示例项目进行正向构建或反向工程。
+8.  **其它需要参考的文件**：1.[`mccp_project_compatibility_definition.md`](./docs/mccp_project_compatibility_definition.md)  2.[`mccp_project_structure_definition.md`](./docs/mccp_project_structure_definition.md)
 
 通过循序渐进地阅读这些文档和示例文件，您将能逐步掌握 MCCP 的核心思想和工作方式。
