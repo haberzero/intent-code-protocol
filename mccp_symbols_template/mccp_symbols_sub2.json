@@ -1,29 +1,11 @@
 {
-    "dir_content": {
-        "file3": {
-            "func": [
-                "file3_function1"
-            ],
-            "class": [
-                "Class3"
-            ],
-            "var": [
-                "file3_variable"
-            ]
-        }
-    },
-    "symbols_param": {
-        "file3_function1": {
-            "scope": "file",
-            "needs_description": false
-        },
-        "Class3": {
-            "scope": "file",
-            "needs_description": false
-        },
-        "file3_variable": {
-            "scope": "file",
-            "needs_description": false
-        }
-    }
+    "dir_content": {},
+    "ignore_list": [
+        "path/to/ignored_file1",
+        "path/to/ignored_dir"
+    ],
+    "frozen_list": [
+        "path/to/frozen_file1",
+        "path/to/frozen_dir"
+    ]
 }

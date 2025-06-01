@@ -1,14 +1,14 @@
 {
     "sub_symbols_files": [
-        "sub_symbol_file_1.json",
-        "sub_symbol_file_2.json"
+        "mccp_symbols_sub1.json",
+        "mccp_symbols_sub2.json"
     ],
     "ignore_list": [
-        "path/to/ignored_file_or_folder1",
-        "path/to/ignored_file_or_folder2"
+        "path/to/ignored_file1",
+        "path/to/ignored_dir"
     ],
     "frozen_list": [
-        "path/to/frozen_file_or_folder1",
-        "path/to/frozen_file_or_folder2"
+        "path/to/frozen_file1",
+        "path/to/frozen_dir"
     ]
 }
