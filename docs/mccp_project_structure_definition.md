@@ -38,7 +38,12 @@ MCCP的核心在于三个层级的源码文件，它们分别代表了从高层�
 - `src_mcpc/`: **符号-伪代码层源码目录**。存放符号-伪代码层文件，后缀名为 `.mcpc`。缩写含义：model context pseudo code。
 - `src_target/`: **目标源代码目录**。存放最终生成或手动编写的目标语言源代码文件（如 `.c`, `.cpp`, `.py`, `.java` 等）。
 
-**重要原则：** `src_mcbh/`, `src_mcpc/`, `src_target/` 这三个目录下的子目录结构必须完全相同，且位于相同路径下的文件应具有相同的 basename（不含后缀的部分），仅文件后缀不同。
+**重要原则：** 
+
+`src_mcbh/`, `src_mcpc/`, `src_target/` 这三个目录下的子目录结构必须完全相同，且位于相同路径下的文件应具有相同的 basename（不含后缀的部分），仅文件后缀不同。
+
+除此之外，符号表文件也会同时分布在src_mcbh以及src_mcpc的各个子文件夹下，每一层级的文件夹内的mccp_symbols将会各自独立管理其当前路径内文件的对应符号表。
+具体内容请查阅[`mccp_project_symbols_definition.md`](docs/mccp_project_symbols_definition.md)
 
 例如，如果 `src_target/utils/math.c以及math.h` 存在，则必须对应存在：
 - `src_mcbh/utils/math_c.mcbh` 

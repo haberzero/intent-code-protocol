@@ -1,0 +1,49 @@
+{
+    "dir_content": {
+        "file1": {
+            "func": [
+                "file1_function1"
+            ],
+            "class": [
+                "Class2"
+            ],
+            "var": [
+                "file1_variable1"
+            ]
+        },
+        "file2": {
+            "func": [
+                "file2_function1"
+            ],
+            "var": [
+                "file2_variable1"
+            ]
+        }
+    },
+    "symbols_param": {
+        "file1_function1": {
+            "scope": "file",
+            "needs_description": true,
+            "inner_symbols": {}
+        },
+        "Class2": {
+            "scope": "file",
+            "needs_description": false,
+            "inner_func": [
+                "method1",
+                "method2"
+            ],
+            "inner_var": [
+                "class_variable1",
+                "class_variable2"
+            ]
+        }
+    },
+    "addition_symbols_param": {
+        "file1_function1": {
+            "description": "This function does something important.",
+            "local_vars_description": {},
+            "is_frozen": true
+        }
+    }
+}

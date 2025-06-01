@@ -1,0 +1,78 @@
+{
+    "dir_content": {
+        "file1": {
+            "global_var": [
+                "global_var1",
+                "global_var2"
+            ],
+            "func": {
+                "function1": {
+                    "name": "function1",
+                    "scope": "file",
+                    "needs_description": true,
+                    "inner_symbols": {
+                        "var": [
+                            "local_var1",
+                            "local_var2"
+                        ]
+                    }
+                }
+            },
+            "class": {
+                "ClassA": {
+                    "name": "ClassA",
+                    "scope": "file",
+                    "needs_description": true,
+                    "inner_symbols": {
+                        "func": [
+                            "method1",
+                            "method2"
+                        ],
+                        "var": [
+                            "class_variable1",
+                            "class_variable2"
+                        ]
+                    }
+                }
+            },
+            "var": {
+                "file_level_variable": {
+                    "name": "file_level_variable",
+                    "scope": "file",
+                    "needs_description": false
+                }
+            }
+        },
+        "file2": {
+            "global_var": [
+                "global_var3"
+            ]
+        }
+    },
+    "addition_symbol_param": {
+        "global_var1": {
+            "description": "A global variable used throughout the file.",
+            "is_frozen": false
+        },
+        "function1": {
+            "description": "This function does something important.",
+            "local_vars_description": {
+                "local_var1": "Used for storing intermediate results.",
+                "local_var2": "Used for error handling."
+            },
+            "is_frozen": false
+        },
+        "ClassA": {
+            "description": "A class representing a specific entity.",
+            "is_frozen": false
+        }
+    },
+    "ignore_list": [
+        "path/to/ignored_file1.c",
+        "path/to/ignored_file2.h"
+    ],
+    "frozen_list": [
+        "path/to/frozen_file1.c",
+        "path/to/frozen_file2.h"
+    ]
+}

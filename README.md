@@ -79,13 +79,12 @@ MCCP 工程依赖于一系列关键文件和概念，它们共同构成了协议
 ├── readme.md             # 项目说明文件
 ├── license               # 项目许可证文件
 ├── requirements.md       # 自然语言需求描述层文件
-├── src_mcbh/             # 行为描述层 (.mcbh) 源码目录
-├── src_mcpc/             # 符号-伪代码层 (.mcpc) 源码目录
+├── src_mcbh/             # 行为描述层源码目录（包括符号表文件）
+├── src_mcpc/             # 符号-伪代码层源码目录（包括符号表文件）
 ├── src_target/           # 生成的目标源代码目录
 ├── config/               # 项目参数文件夹
 │   ├── mccp_config.json      # 项目核心配置文件
-│   ├── mccp_compatibility.json # 项目兼容性文件
-│   └── mccp_symbols.json     # 项目符号表文件
+│   └── mccp_compatibility.json # 项目兼容性文件
 └── temp/                 # 临时文件目录（可忽略，用于构建中间产物）
 ```
 
@@ -93,7 +92,7 @@ MCCP 工程依赖于一系列关键文件和概念，它们共同构成了协议
 -   `src_mcbh/`: 存放行为描述层文件，使用 `.mcbh` 扩展名。
 -   `src_mcpc/`: 存放符号-伪代码层文件，使用 `.mcpc` 扩展名。
 -   `src_target/`: 存放 MCCP 工具链生成的目标编程语言源代码。
--   `config/`: 集中存放 `mccp_config.json`, `mccp_compatibility.json`, `mccp_symbols.json` 等项目参数和元数据文件。
+-   `config/`: 集中存放 `mccp_config.json`, `mccp_compatibility.json` 等项目参数和元数据文件。
 -   `temp/`: 存放构建过程中产生的临时文件，通常应被版本控制系统忽略（如在 `.gitignore` 中配置）。
 
 目录布局原则:
@@ -113,13 +112,14 @@ MCCP 工程依赖于一系列关键文件和概念，它们共同构成了协议
     demo_project_1_hello_world/
     ├── requirements.md
     ├── src_mcbh/
+    │   ├── mccp_symbols.json
     │   └── main_logic.mcbh
     ├── src_mcpc/
+    │   ├── mccp_symbols.json
     │   └── main_logic.mcpc
     ├── config/
     │   ├── mccp_config.json
-    │   ├── mccp_compatibility.json
-    │   └── mccp_symbols.json
+    │   └── mccp_compatibility.json
     └── src_target/
         └── main_logic.py
     ```
@@ -137,12 +137,13 @@ MCCP 工程依赖于一系列关键文件和概念，它们共同构成了协议
     ├── requirements.md
     ├── config/
     │   ├── mccp_config.json
-    │   ├── mccp_compatibility.json
-    │   └── mccp_symbols.json
+    │   └── mccp_compatibility.json
     ├── src_mcbh/
+    │   ├── mccp_symbols.json           # 符号表
     │   ├── main_calculator.mcbh        # 主逻辑行为描述
     │   └── arithmetic_operations.mcbh  # 算术操作行为描述
     ├── src_mcpc/
+    │   ├── mccp_symbols.json           # 符号表
     │   ├── main_calculator.mcpc        # 主逻辑符号-伪代码
     │   └── arithmetic_operations.mcpc  # 算术操作符号-伪代码
     └── src_target/

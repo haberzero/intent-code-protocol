@@ -1,0 +1,23 @@
+{
+    "projectName": "Python Utils Library",
+    "mccpVersion": "0.1.0",
+    "targetLanguage": "Python",
+    "targetModel": "advanced_mccp_model_v2",
+    "dependencies": [
+        "numpy",
+        "scipy"
+    ],
+    "buildSettings": {
+        "installCommand": "pip install --no-deps ."
+    },
+    "fileSystemMapping": {
+        "behavioralLayerDir": "src_mbh/",
+        "symbolicLayerDir": "src_mpc/",
+        "targetLayerDir": "src_target/",
+        "behavioralLayerExtension": ".mcbh",
+        "symbolicLayerExtension": ".mcpc",
+        "is_extra_suffix": true
+    },
+    "fileSpecificSettings": [],
+    "symbolSpecificSettings": []
+}
