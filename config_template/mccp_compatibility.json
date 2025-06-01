@@ -1,0 +1,66 @@
+{
+  "schema_reference": "./schemas/mccp_compatibility_schema.json",
+  "protocol_version": "1.0.0",
+  "compatible_versions": [
+    "1.0.0",
+    "1.0.1",
+    "1.1.0"
+  ],
+  "language_settings": {
+    "target_languages": [
+      "cpp",
+      "python",
+      "javascript",
+      "go"
+    ],
+    "language_options": {
+      "cpp": {
+        "compiler_standard": "c++17",
+        "supported_platforms": ["linux", "windows", "macos"]
+      },
+      "python": {
+        "min_version": "3.8",
+        "dependency_manager": "pip",
+        "feature_flags": {
+          "strict_typing_enabled": true,
+          "async_support": false
+        }
+      },
+      "javascript": {
+        "environment": "node",
+        "min_node_version": "14.0.0",
+        "target_ecmascript_version": "es2020"
+      }
+    }
+  },
+  "dependency_mapping": {
+    "external_libraries": {
+      "data_serialization": {
+        "cpp": "protobuf",
+        "python": "json",
+        "javascript": "json",
+        "go": "encoding/json"
+      },
+      "logging_framework": {
+        "cpp": "spdlog",
+        "python": "logging",
+        "javascript": "winston",
+        "go": "log"
+      }
+    },
+    "internal_modules": {
+      "error_handling": {
+        "python": "mccp.utils.errors",
+        "go": "mccp/internal/errors"
+      },
+      "configuration_loader": {
+         "cpp": "mccp_lib::ConfigLoader",
+         "python": "mccp.config.loader"
+      }
+    }
+  },
+  "feature_flags": {
+     "backward_compatibility_mode": false,
+     "experimental_parsing_engine": false
+  }
+}
