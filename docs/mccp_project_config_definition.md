@@ -188,7 +188,7 @@
   "targetLanguage": "Python",
   "targetModel": "default_mccp_model",
   "dependencies": [
-    "json" // 标准库，但列出有助于理解
+    "json"
   ],
   "buildSettings": {
 
@@ -211,7 +211,7 @@
 *   `src_mbh/demo_projects/demo1_todo_app/todo_app.mcbh`
 *   `src_mpc/demo_projects/demo1_todo_app/todo_app.mcpc`
 
-### 示例 3: Python 项目，但强制 `is_extra_suffix: true` (假设)
+### 示例 3: Python 项目，但强制 `is_extra_suffix: true` (假设)(demo3 暂未编写，仅作展示is_extra_suffix的作用)
 
 这是一个假设的 Python 项目示例，其中显式地将文件扩展名添加到 MCCP 文件名中以增加清晰度。
 
