@@ -1,23 +1,22 @@
 {
-    "projectName": "Python Utils Library",
-    "mccpVersion": "0.1.0",
+    "projectName": "basic_statistics_app",
+    "mccpVersion": "0.0.2",
     "targetLanguage": "Python",
-    "targetModel": "advanced_mccp_model_v2",
-    "dependencies": [
+    "api-url": "",
+    "api-key": "",
+    "llmModel": "qwen3-8b-instruct",
+    "dependentLib": [
         "numpy",
         "scipy"
     ],
     "buildSettings": {
-        "installCommand": "pip install --no-deps ."
+        "installCommand": ""
     },
     "fileSystemMapping": {
         "behavioralLayerDir": "src_mbh/",
         "symbolicLayerDir": "src_mpc/",
         "targetLayerDir": "src_target/",
-        "behavioralLayerExtension": ".mcbh",
-        "symbolicLayerExtension": ".mcpc",
         "is_extra_suffix": true
     },
-    "fileSpecificSettings": [],
-    "symbolSpecificSettings": []
+    "fileSpecificSettings":{}
 }

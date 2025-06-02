@@ -1,4 +1,11 @@
 {
+    "depend_content": {
+        "file1": {
+            "file2": [
+                "global_var3"
+            ]
+        }
+    },
     "dir_content": {
         "file1": {
             "function1":"bottom",

@@ -1,20 +1,27 @@
 {
+    "depend_content": {
+        "file1": {
+            "file2": [
+                "global_var3"
+            ]
+        }
+    },
     "dir_content": {
         "file1": {
-            "function1":"bottom",
-            "ClassA":{
-                "method1":"bottom",
-                "method2":{
-                    "local_var1":"bottom",
-                    "local_var2":"bottom"
+            "function1": "bottom",
+            "ClassA": {
+                "method1": "bottom",
+                "method2": {
+                    "local_var1": "bottom",
+                    "local_var2": "bottom"
                 },
-                "class_variable1":"bottom"
+                "class_variable1": "bottom"
             },
-            "global_var1":"bottom",
-            "file_level_variable":"bottom"
+            "global_var1": "bottom",
+            "file_level_variable": "bottom"
         },
         "file2": {
-            "global_var3":"bottom"
+            "global_var3": "bottom"
         }
     },
     "symbols_param": {
