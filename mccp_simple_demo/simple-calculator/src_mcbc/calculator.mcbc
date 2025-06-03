@@ -1,0 +1,30 @@
+// MCCP: Behavior Description for Calculator
+
+// Function to add two numbers
+FUNCTION addNumbers:
+    INPUT: number1, number2
+    OUTPUT: result
+    BEHAVIOR:
+    The function should take two numbers and return their sum.
+
+// Function to subtract two numbers
+FUNCTION subtractNumbers:
+    INPUT: number1, number2
+    OUTPUT: result
+    BEHAVIOR:
+    The function should take two numbers and return the result of subtracting the second from the first.
+
+// Function to multiply two numbers
+FUNCTION multiplyNumbers:
+    INPUT: number1, number2
+    OUTPUT: result
+    BEHAVIOR:
+    The function should take two numbers and return their product.
+
+// Function to divide two numbers
+FUNCTION divideNumbers:
+    INPUT: number1, number2
+    OUTPUT: result, error (optional)
+    BEHAVIOR:
+    The function should take two numbers and return the result of dividing the first by the second.
+    IF the second number is zero, THEN indicate an error and the result is undefined.
