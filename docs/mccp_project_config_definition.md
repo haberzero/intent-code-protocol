@@ -16,8 +16,8 @@
 / 项目根目录
 ├── config/
 │   └── mccp_config.json  <-- 文件位置
-├── src_mbh/
-├── src_mpc/
+├── src_mcbc/
+├── src_mcpc/
 └── src_target/
 ```
 
@@ -81,10 +81,10 @@
 
 ```json
 "fileSystemMapping": {
-  "behavioralLayerDir": "src_mbh/", // 行为描述层目录，允许存在不同的工程结构，便于适配不同的历史性代码
-  "symbolicLayerDir": "src_mpc/",   // 符号描述层目录，允许存在不同的工程结构，便于适配不同的历史性代码
-  "targetLayerDir": "src_target/",  // 目标代码目录，允许存在不同的工程结构，便于适配不同的历史性代码
-  "is_extra_suffix": false // 默认值，与文件命名有关，见下方规则
+  "mcbcDir": "src_mcbc/", // 行为描述层目录，允许存在不同的工程结构，便于适配不同的历史性代码
+  "mcpcDir": "src_mcpc/",   // 符号描述层目录，允许存在不同的工程结构，便于适配不同的历史性代码
+  "targetDir": "src_target/",  // 目标代码目录，允许存在不同的工程结构，便于适配不同的历史性代码
+  "isExtraSuffix": false // 默认值，与文件命名有关，见下方规则
 }
 ```
 
