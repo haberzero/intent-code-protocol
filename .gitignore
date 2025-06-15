@@ -17,6 +17,7 @@ __pycache__/
 
 # Temporary files
 temp/
+temp_from_chain/
 tmp/
 *.tmp
 *.log
