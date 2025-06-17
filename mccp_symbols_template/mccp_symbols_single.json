@@ -1,10 +1,7 @@
 {
     "depend_content": {
-        "file1": {
-            "file2": [
-                "global_var3"
-            ]
-        }
+        "file1": ["file2"],
+        "file2": []
     },
     "dir_content": {
         "file1": {
