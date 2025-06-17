@@ -175,11 +175,8 @@ MCCP 项目采用分布式符号表结构。`mccp_symbols.json` 文件并非集�
 ```json
 {
     "depend_content": {
-        "file1": {
-            "file2": [
-                "global_var3"
-            ]
-        }
+        "file1": ["file2"],
+        "file2": []
     },
     "dir_content": {
         "file1": {
