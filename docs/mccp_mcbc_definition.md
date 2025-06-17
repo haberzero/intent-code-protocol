@@ -8,266 +8,362 @@
 
 `.mcbc` 文件允许使用中文/英文作为描述性文本。理论上来说，对其它语言的支持程度仅取决于大模型的训练结果。
 
-## 1. 行为/功能描述 (Behavior/Function Description)
+## 1. 行为/功能描述
 
-在`.mcbc` 层，我们使用 `FUNC` 关键字声明一个新的功能或行为块。通常与FUNC相伴随出现的内容还有：`INPUT`, `OUTPUT`, `BEHAVIOR`。
+在 `.mcbc` 层，我们使用 `func` 关键字声明一个新的功能或行为块。通常与 `func` 相伴随出现的内容还有：`input`, `output`, `behavior`。
 
-语法:
-`FUNC <功能名称>:`
+语法:  
+`func <功能名称>:`  
+`<功能名称>` 是一个标识符，应清晰地表达该功能的目的。命名推荐使用驼峰命名法 (camelCase) 或下划线命名法 (snake_case)。也可以使用描述性命名（如下方关于计算总计的示例），mccp-toolchain 会结合描述内容尝试生成一个实际的可被调用的符号。
 
-`<功能名称>` 是一个标识符，应清晰地表达该功能的目的。命名推荐使用驼峰命名法 (*camelCase*) 或下划线命名法 (*snake_case*)。也可以使用描述性命名（如下例），mccp-toolchain会结合描述内容与符号表进行推断
+语法:  
+`input: <参数列表>`  
+`output: <参数列表>`  
 
-语法:
-`INPUT: <参数列表>` 
+描述输入参数，输出参数（返回参数），参数列表用逗号 `,` 分隔。
 
-语法:
-`OUTPUT: <参数列表>`
-
-描述输入参数，输出参数（返回参数），参数列表用逗号`,` 分隔
-
-语法:
-`BEHAVIOR:`
+语法:  
+`behavior:`      
     `  <描述步骤 1>`
     `  <描述步骤 2>`
     `  ...`
 
-`BEHAVIOR:` 关键字开始一个功能或行为的具体描述块。该关键字之后的内容需要缩进。
+`behavior:` 关键字开始一个功能或行为的具体描述块。该关键字之后的内容需要缩进。
 
-示例：
+### 示例：
 
 ```mcbc
-FUNC 计算总价:
-INPUT: 商品列表, 优惠码
-OUTPUT: (总金额, 应用的折扣)
-BEHAVIOR:
-    初始化一个变量来存储当前的总金额，初始值为零。 (Initialize a variable to store the current total amount, starting at zero.)
+func 计算总价:
+input: 商品列表, 优惠码
+output: 总金额, 应用的折扣
+behavior:
+    初始化一个变量来存储当前的总金额，初始值为零。
     遍历商品列表中的每一个商品。
     对于每个商品，获取其价格，并累加到总金额变量中。
     检查是否提供了优惠码。
-    如果提供了优惠码，计算应用的折扣并更新总金额。 (If discount code is provided, calculate applied discount and update the total amount variable.)
-    返回最终的总金额和应用的折扣变量的值。 (Return the values of the final total amount and applied discount variables.)
+    如果提供了优惠码，计算应用的折扣并更新总金额。
+    返回最终的总金额和应用的折扣变量的值。
 ```
 
-## 2. 变量和类概念描述 (Variable and Class Concept Description)
+## 2. 变量和类概念描述
 
-在 `.mcbc` 层，我们通过语言文本配合结构化缩进语法对变量 (`VAR`) 和类 (`CLASS`) 的功能职责进行描述。
+在 `.mcbc` 层，我们通过语言文本配合结构化缩进语法对变量 (`var`) 和类 (`class`) 的功能职责进行描述。
 
-准确来说，在行为描述层允许使用隐含过程变量的描述来对过程中出现的变量进行说明，VAR 关键字的主要使用目的是强制让大模型识别：此处有一个开发者强制要求的变量
+准确来说，在行为描述层允许使用隐含过程变量的描述来对过程中出现的变量进行说明，`var` 关键字的主要使用目的是强制让大模型识别：此处有一个开发者强制要求的变量。
 
-示例 (过程变量的描述):
+`var` 定义之后可以跟随一个`:`，随后对变量进行一些精简的描述，例如如何初始化，或者应该使用什么类型的变量。
+
+### 示例 (过程变量的描述)
 
 ```mcbc
-FUNC 计算总价:
-INPUT: 商品列表, 优惠码
-OUTPUT: (总金额, 应用的折扣)
-BEHAVIOR:
-    VAR 当前总金额: 初始化为0。
-    (Initialize a VAR currTotalAmount to store the current total amount, starting at zero.)
+func 计算总价:
+input: 商品列表, 优惠码
+output: 总金额, 应用的折扣
+behavior:
+    var 当前总金额: 初始化为0。
     遍历商品列表中的每一个商品。
     对于每个商品，获取其价格，并累加到总金额变量中。
     检查是否提供了优惠码。
-    如果提供了优惠码，计算应用的折扣并更新 VAR 当前总金额。 
-    (If discount code is provided, calculate applied discount and update the VAR currTotalAmount)
-    返回最终的 VAR 当前总金额 和应用的折扣变量的值。 
-    (Return the VAR currTotalAmount and Return the applied discount variables.)
+    如果提供了优惠码，计算应用的折扣并更新 var 当前总金额。 
+    返回最终的 var 当前总金额 和应用的折扣变量的值。 
 ```
 
-示例 (类的描述):
+### 示例 (类的描述)
 
 ```mcbc
-CLASS ConfigurationManager:
-    VAR configPath: 字符串  // 配置文件路径
+class ConfigManager:
+    var configPath: 字符串
     
-    FUNC 加载配置(): 布尔值
-        BEHAVIOR:
-            尝试读取 this.configPath 指向的配置文件
-            若成功则返回 true
-            否则返回 false
+    func 加载配置
+    behavior:
+        尝试读取 this.configPath 指向的配置文件
+        若成功则返回 true
+        否则返回 false
     
-    FUNC 获取参数(参数名: 字符串): 字符串
-        BEHAVIOR:
-            从已加载配置中查找指定参数名
-            返回对应的参数值
+    func 获取参数
+    behavior:
+        从已加载配置中查找指定参数名
+        返回对应的参数值
 ```
 
-## 3. 逻辑控制流 (High-level Logic & Control Flow)
+## 3. 逻辑控制流
 
-`.mcbc` 层支持描述控制流，但不强制要求使用精确的`IF-ELSE` 语法。开发者可以使用隐含分支结构或隐含循环结构的自然语言说明，但是应当注意合理缩进，便于大模型的识别
+`.mcbc` 层支持描述控制流，但不强制要求使用精确的 `if-else` 语法。开发者可以使用隐含分支结构或隐含循环结构的自然语言说明，但是应当注意合理缩进，便于大模型的识别。
 
-### 3.1 条件判断 (Conditional Statements)
-
-使用 `IF <条件>  ...` 和 `ELSE:` 描述条件分支。
+### 3.1 条件判断
 
 语法:
-`IF <条件描述> :`
+`if <条件描述> :`
     `<结果或步骤描述>`
-`ELSE:`
+`else:`
     `<结果或步骤描述>`
 
-示例:
+#### 示例:
 
 ```mcbc
-BEHAVIOR:
-    检查用户权限。 (Check user permissions.)
-    IF 权限足够执行此操作  执行操作并记录日志。 (IF permissions are sufficient for this operation  perform the operation and log the event.)
-    ELSE:
-        返回权限不足错误。 (Return insufficient permissions error.)
+behavior:
+    检查用户权限。
+    if 权限足够执行此操作  执行操作并记录日志。
+    else:
+        返回权限不足错误。
 ```
 
-### 3.2 循环与迭代 (Loops and Iteration)
+### 3.2 循环与迭代
 
-`.mcbc` 层通过描述性语句结合缩进说明循环或迭代行为。可以提供特定的循环关键字（如 `FOR`, `WHILE`），也可以描述性地表达“对集合中的每一个元素执行...”。
+`.mcbc` 层通过描述性语句结合缩进说明循环或迭代行为。可以提供特定的循环关键字（如 `for`, `while`），也可以隐含地进行描述性表达“对集合中的每一个元素执行...”。
 
-语法:
-`<描述性语句，暗示迭代，如：> 对列表中的每一个项:`
+语法:  
+`<描述性语句，隐含迭代需求，如：> 对列表中的每一个项:`
     `  <对当前项执行的操作>`
 
-说明:
-使用如“遍历”、“对每个”、“循环处理”、“FOR each”等词语结合缩进表达迭代逻辑。
+说明: 使用如“遍历”、“对每个”、“循环处理”、“for each”等词语结合缩进表达迭代逻辑。
 
-示例:
-
-```mcbc
-BEHAVIOR:
-    读取文件所有行到列表中。 (Read all lines from the file into a list.)
-    对列表中的每一行: (FOR each line in the list:)
-        移除行首尾空格。 (Remove leading and trailing whitespace from the line.)
-        如果行不为空且不是注释行: (IF the line is not empty and not a comment line:)
-            处理该行数据。 (Process the data in the line.)
-```
-
-### 3.3 错误处理与尝试 (Error Handling and Attempts)
-
-使用 `TRY...` 结构描述可能失败的操作，并结合 `IF ... fails  ...` 描述失败时的处理。
-
-对于不支持类似`try-catch` 语法的目标语言而言，此类操作应当被转化为基本的分支语句
-
-语法:
-`TRY <操作描述>.`
-`IF <操作描述> fails  <失败处理描述>.`
-
-说明:
-这是一种常见模式，用于描述需要检查结果并进行错误处理的操作流程。
-
-示例:
+#### 示例:
 
 ```mcbc
-BEHAVIOR:
-    TRY 连接到数据库。 (TRY connect to the database.)
-    IF 连接到数据库 fails  记录错误日志并终止操作。 (IF connect to the database fails  log error and terminate operation.)
-    ELSE:
-        执行数据库查询。 (Execute database query.)
-        处理查询结果。 (Process query results.)
+behavior:
+    读取文件所有行到列表中。
+    对列表中的每一行:
+        如果是注释行：跳过此行，不记录
+        如果行不为空且不是注释行: 将内容append进入结果变量
+    返回结果变量
+
 ```
 
-## 4. 注释 (Commenting)
+### 3.3 错误处理与尝试
+
+使用 `try...` 结构描述可能失败的操作，并结合 `if fails ...` 描述失败时的处理。
+
+对于不支持类似 try-catch 语法的目标语言而言，此类操作应当被转化为基本的分支语句。
+
+语法:  
+`try <操作描述>`
+
+`if <操作描述> fails <失败处理描述>`
+
+#### 示例:
+
+```mcbc
+behavior:
+    try 连接到数据库
+    if 连接到数据库 fails  记录错误日志并终止操作。
+    else:
+        执行数据库查询。
+        处理查询结果。
+```
+
+## 4. 注释
 
 `.mcbc` 文件支持两种类型的注释，用于不同的目的：
 
-- 人员注释 (`//`): 常规的注释内容，主要面向代码阅读人员。mccp-toolchain 会直接忽略此注释
-- 意图注释 (`@`): 用于提供额外的、非行为流程本身的元信息，例如设计意图、对模型的额外约束、性能要求、安全考虑、或者关联到符号表/配置文件的额外提示。这些注释旨在引导模型的理解和生成过程。当用户有一些不便于或不希望被包含在行为描述流程中的内容时，可以使用此类注释。mccp-toolchain会对此类意图注释进行特定处理。
+人员注释 (`//`): 常规的注释内容，主要面向代码阅读人员。mccp-toolchain 会直接忽略此注释。
 
-示例:
+意图注释 (`@`): 用于提供额外的、非行为流程内的元信息，例如对代码行为的额外约束、性能要求、安全考虑、线程约束等。这些注释旨在对模型的理解和生成过程进行额外约束。
+
+- 当用户有一些不便于或不希望被包含在行为描述流程中的内容时，可以使用此意图注释。mccp-toolchain会对此类意图注释进行特定处理。
+- 意图注释的作用域是**其下方的代码块**，例如，在func前的意图注释会影响整个func的behavior，在分支块内的意图注释**应该和分支关键字本身平齐**，暗示意图注释的作用域是下方整个分支代码块。
+- 意图注释不应该被零散地使用，零散的意图注释实际上就是一种行为描述代码，大量混在行为描述代码中的 `@` 标识符只会造成混淆，请勿滥用
+
+#### 示例:
 
 ```mcbc
-// 这是整个文件的目的描述 (This describes the overall purpose of the file)
-@ 这个模块是高性能关键路径的一部分，模型生成代码时需要考虑效率。优先考虑运行时间短的算法，无需考虑空间占用。
-FUNC 初始化系统:
-INPUT: 配置文件路径 @ 确保路径是绝对路径且文件存在
-OUTPUT: (成功状态, 错误信息)
-BEHAVIOR:
-    // 检查配置文件是否存在 (Check if the config file exists)
-    TRY 读取配置文件。 // 使用标准库的读取函数 (Use standard library read function)
-    IF 读取配置文件 fails  返回错误状态和信息。
-    ELSE:
-        @ 配置格式是 YAML，需要使用特定的解析库。
+// 这个函数会进行系统的初始化，这段人员注释会被 mccp-toolchain 忽略
+@ 这个模块是高性能关键路径的一部分，模型生成代码时需要考虑效率。优先考虑运行时间短的算法，无需考虑空间占用。可以使用标准库的读取函数
+func 初始化系统:
+input: 配置文件路径
+output: 成功状态, 错误信息字符串
+behavior:
+    try 读取配置文件。 
+    if 读取配置文件 fails 返回错误状态和信息。
+    else:
+    @ 配置格式是 YAML，需要使用特定的解析库。
         解析配置内容。
         根据配置内容 初始化各个模块。
         返回成功状态。
 ```
 
-## 5. 缩进约定 (Indentation Convention)
+## 5. 对外符号描述
+
+在 `.mcbc` 文件中，我们引入 `description` 关键字，用于为特定的函数、变量、类等符号提供简洁的功能、职责或作用描述。该描述应尽量简明扼要，不超过50个汉字或30个英文单词。
+
+这一描述将作为符号的总结性说明，它并不在当前文件中进行作用，而是一种对外声明，用于后续大模型在处理依赖符号时，能进行合理的函数/类/全局变量调用。
+
+此关键字并非强制性要求，不过当你在使用MCCP-toolchain时，如果你的模型始终难以正确地考虑函数调用等依赖项，可以考虑利用description关键字进行额外的描述。
+
+语法:
+`description: <描述文本>`
+
+说明:
+- `description` 关键字可以出现在 `func`、`var` 或 `class` 声明之后，但在 `input`、`output` 或 `behavior` 之前
+- 每个符号（函数、变量、类）最多只能有一个 `description` 描述
+- 描述文本应简洁且清晰地表明一个符号的对外功能，特别关注符号调用的“结果/功能”而不是内部运行细节。
+- 局部变量原则上不应该出现 `description` 关键字描述，较远的未来中可能会规划带有作用域定义的description关键字。
+
+### 示例:
+
+在函数中使用:
+```mcbc
+func 计算总价:
+description: 根据商品列表和优惠码计算最终总价和折扣
+input: 商品列表, 优惠码
+output: 总金额, 应用的折扣
+behavior:
+    ...
+```
+
+在变量中使用（必须用于对外可见的变量）:
+```mcbc
+class ConfigManager:
+    var configPath: 字符串
+    description: 存储配置文件的路径字符串
+
+    func 加载配置
+    behavior:
+        ...
+```
+
+在类中使用:
+```mcbc
+class ConfigManager:
+description: 负责配置文件的加载和参数读取
+    var configPath: 字符串
+    ...
+```
+
+## 6. 缩进约定 (indentation convention)
 
 缩进在 `.mcbc` 文件中具有结构性意义，用于表示行为块的范围以及逻辑控制流的嵌套层级。建议使用一致的缩进单位（例如，4个空格）。
 
-示例:
+input, output, behavior几个关键字是固定跟随在func后的。出于减少缩进数量的考虑，规定这几个固定位置的关键字直接和func关键字保持平齐
+
+### 示例:
 
 ```mcbc
-FUNC 处理订单:
-INPUT: 订单数据
-OUTPUT: (处理结果, 附加信息)
-BEHAVIOR:
-    验证订单数据的完整性。 (Validate the integrity of the order data.)
-    IF 验证失败:
-        记录验证失败日志。 (Log validation failure.)
-        返回失败结果和原因。 (Return failure result and reason.)
-    ELSE: // ELSE下的块体需缩进 (Block body under ELSE needs indentation)
-        检查库存。 (Check inventory.)
-        IF 库存充足:
-            扣减库存。 (Decrease inventory.)
-            生成支付请求。 (Generate payment request.)
-            返回支付请求信息。 (Return payment request information.)
-        ELSE: // ELSE下的块体需缩进 (Block body under ELSE needs indentation)
-            标记订单为缺货。 (Mark order as out of stock.)
-            通知用户。 (Notify the user.)
-            返回缺货信息。 (Return out of stock information.)
+func 处理订单:
+input: 订单数据
+output: 处理结果
+behavior:
+    验证订单数据的完整性。
+    if 验证失败:
+        记录验证失败日志。
+        打印失败信息。
+        返回失败原因代码。
+    else:
+        检查库存。
+        if 库存充足:
+            扣减库存。
+            生成支付请求。
+            返回支付请求信息。
+        else:
+            标记订单为缺货。
+            通知用户。
+            返回缺货信息。
 ```
 
-## 6. 完整示例 (Full Example)
+## 完整示例
 
-以下是一个完整的 `.mcbc` 文件示例，演示了上述语法的综合使用。
+```
+// config_manager.mcbc
+// 配置管理模块，负责配置文件的加载和参数读取
 
-```mcbc
-// mccp_mcbc_syntax_convention_revised.md
-// MCCP Behavior Description for a simple file processor module - Revised
-
-// 文件用途: 定义文件处理相关的行为，例如读取、写入、反转行等。
-// File Purpose: Defines behaviors related to file processing, such as reading, writing, reversing lines, etc.
-
-@ 这个模块主要负责IO操作，注意异常处理。
-
-FUNC reverseFileLines:
-INPUT: input_filepath, output_filepath // 输入：输入文件路径，输出文件路径 (Input: input file path, output file path)
-OUTPUT: (success_status, error_message) // 输出：成功状态 (布尔), 错误信息 (字符串, 可选) (Output: success status (boolean), error message (string, optional))
-BEHAVIOR:
-    // 需要一个变量来存储读取到的所有行。
-    // A variable is needed to store all read lines.
-    @ 变量名应为 `linesList`，类型为字符串列表。
-    TRY open the file at input_filepath for reading. // 尝试打开输入文件进行读取 (TRY open the input file for reading.)
+@ 此模块为系统核心组件，需始终确保线程安全
+class ConfigManager:
+description: 负责管理应用程序配置的加载和参数读取
+    var configPath: 字符串
+    description: 配置文件路径
     
-    IF open the file at input_filepath fails : // 检查文件打开是否成功 (Check if file opening was successful.)
-        // 如果失败，记录错误并返回。 (If fails, log error and return.)
-        @ 使用日志系统记录错误，级别为 ERROR。
-        Log an error indicating failure to open input file: input_filepath.
-        Return (False, "Failed to open input file").
-    ELSE:
-        // 如果成功，读取文件所有行到列表linesList中。
-        // If successful, read all lines from the file into the linesList variable.
-        Read all lines from the input file into the linesList variable.
-        
-        Close the input file. // 关闭输入文件 (Close the input file.)
-        
-        // 对行列表linesList进行反转。
-        // Reverse the order of lines in the linesList variable.
-        Reverse the order of elements in the linesList.
-        
-        TRY open the file at output_filepath for writing. // 尝试打开输出文件进行写入 (TRY open the output file for writing.)
-        
-        IF open the file at output_filepath fails : // 检查输出文件打开是否成功 (Check if output file opening was successful.)
-            // 如果失败，记录错误并返回。 (If fails, log error and return.)
-            Log an error indicating failure to open output file: output_filepath.
-            Return (False, "Failed to open output file").
-        ELSE:
-            // 如果成功，将反转后的行写入输出文件。 (If successful, write the reversed lines to the output file.)
-            // 遍历反转后的列表linesList中的每一行。
-            // Iterate through each line in the reversed linesList.
-            FOR each line in the linesList:
-                Write the current line to the output file, preserving original line endings. // 将当前行写入输出文件 (Write the current line to the output file)
-            
-            Close the output file. // 关闭输出文件 (Close the output file.)
-            
-            // 操作成功，返回成功状态。 (Operation successful, return success status.)
-            Return (True, NULL). // NULL表示没有错误信息 (NULL indicates no error message)
+    var configData: 字典
+    description: 存储加载后的配置数据
 
-// End of file_operations.mcbc
+    func 加载配置:
+    description: 加载配置文件内容到内存
+    input: 
+    output: 布尔值
+    behavior:
+        // 尝试读取配置文件
+        try 打开并读取 this.configPath 指向的文件内容
+        if 打开文件 fails:
+            记录错误："无法打开配置文件"
+            返回 false
+        else:
+        @ 配置文件格式为 JSON
+            try 解析文件内容
+            if 解析 fails:
+                记录错误："配置文件格式错误"
+                返回 false
+            else:
+                将解析后的JSON对象存入 this.configData
+                返回 true
+
+    func 获取参数:
+    description: 根据参数名获取配置值
+    input: 参数名: 字符串
+    output: 字符串
+    behavior:
+        // 检查配置是否已加载
+        if this.configData 为空:
+            调用 this.加载配置()  // 尝试自动加载配置
+            if 加载失败:
+                返回 "配置未加载"
+        
+        // 查找参数值
+        if 参数名 存在于 this.configData 中:
+            返回 this.configData[参数名]
+        else:
+            记录警告："配置参数不存在：" + 参数名
+            返回 ""
+
+    func 设置参数:
+    description: 更新配置参数值
+    input: 参数名: 字符串, 参数值: 字符串
+    output: 布尔值
+    behavior:
+        if this.configData 为空:
+            调用 this.加载配置()
+            if 加载失败:
+                返回 false
+        
+        // 更新参数值
+        this.configData[参数名] = 参数值
+        返回 true
+
+    func 保存配置:
+    description: 将配置保存回文件
+    input: 
+    output: 布尔值
+    behavior:
+        if this.configData 为空:
+            返回 false
+        
+        try 打开 this.configPath 指向的文件进行写入
+        if 打开文件 fails:
+            记录错误："无法写入配置文件"
+            返回 false
+        else:
+        @ 使用 JSON 格式保存
+            将 this.configData 序列化为JSON字符串
+            将JSON字符串写入文件
+            关闭文件
+            返回 true
+
+
+@ 这段代码是使用示例，在最终结果代码中必须全部注释，仅作为参考或者在功能测试时临时使用
+func 初始化系统配置:
+input: 
+output: 布尔值
+behavior:
+    var 配置管理器 = new ConfigManager()
+    配置管理器.configPath = "config/app_settings.json"
+    
+    if 配置管理器.加载配置() == false:
+        记录错误："系统配置加载失败"
+        返回 false
+    else:
+        var 服务端口 = 配置管理器.获取参数("server_port")
+        if 服务端口 == "":
+            配置管理器.设置参数("server_port", "8080")
+            配置管理器.保存配置()
+        
+        返回 true
+
 ```
