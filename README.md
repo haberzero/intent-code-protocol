@@ -65,17 +65,20 @@ MCCP 的约定依赖于一系列定义文件，它们一同构成对MCCP的定�
 
 - 核心文档体系:
     - [`mccp_documentation.md`](docs/mccp_documentation.md): MCCP 的总体介绍、理念、抽象层级和基本特征。
+    - [`mccp_mcbc_definition.md`](docs/mccp_mcbc_definition.md): MCCP的半自然语言行为描述层语法约定。（重要）
+    - - [`mccp_mcpc_definition.md`](docs/mccp_mcpc_definition.md): MCCP的符号-伪代码层语法约定。
     - [`mccp_project_structure_definition.md`](docs/mccp_project_structure_definition.md): 定义标准的 MCCP 项目文件结构和命名约定。
     - [`mccp_project_config_definition.md`](docs/mccp_project_config_definition.md): 详细说明项目的核心配置文件 `mccp_config.json` 的结构和用途。
     - [`mccp_project_symbols_definition.md`](docs/mccp_project_symbols_definition.md): 详细说明项目符号表文件 `mccp_symbols.json`
     - [`mccp_project_compatibility_definition.md`](docs/mccp_project_compatibility_definition.md): 详细说明项目兼容性文件 `mccp_compatibility.json` 的结构和用途。目前仅作为占位符，当未来明确如何在MCCP版本间进行工程迁移时，此文件将会被重新完善。
 
 - 项目配置文件示例 (`config/`):
-    - `mccp_config.json` 定义项目级别的核心参数，如目标语言、兼容工具链版本、预期 LLM。
-    - `mccp_compatibility.json` （待实现）定义项目所需的 MCCP 协议版本、目标语言、兼容工具链版本、预期 LLM 等兼容性元数据，确保跨环境一致性。
+    - `mccp_config.json` 定义项目级别的核心参数，如目标语言、兼容工具链版本
+    - `mccp_api_config.json` 储存api-url/key等内容。请确保此文件始终处于.gitignore列表中，避免敏感信息泄露
+    - `mccp_compatibility.json` （待实现）定义项目所需的 MCCP 协议版本、目标语言、兼容工具链版本、预期 LLM 等兼容性元数据，确保跨环境一致性
 
 - 符号表文件示例 (分布在`src_mcbc/` 和 `src_mcpc/`当中):
-    - `mccp_symbols.json`: 定义项目的符号表结构，包括文件结构、符号定义、依赖关系等。
+    - `mccp_symbols.json`: 定义项目的符号表结构，包括文件结构、符号定义、依赖关系等
 
 - 源码文件示例（待完善）
 
@@ -93,7 +96,7 @@ MCCP 的约定依赖于一系列定义文件，它们一同构成对MCCP的定�
 ├── src_target/           # 生成的目标源代码目录
 ├── config/               # 项目参数文件夹
 │   ├── mccp_config.json      # 项目核心配置文件
-│   └── mccp_compatibility.json # 项目兼容性文件（规划中）
+│   └── mccp_api_config.json
 └── temp/                 # 临时文件目录（可忽略，用于构建中间产物）
 ```
 
