@@ -66,7 +66,7 @@ MCCP 的约定依赖于一系列定义文件，它们一同构成对MCCP的定�
 - 核心文档体系:
     - [`mccp_documentation.md`](docs/mccp_documentation.md): MCCP 的总体介绍、理念、抽象层级和基本特征。
     - [`mccp_mcbc_definition.md`](docs/mccp_mcbc_definition.md): MCCP的半自然语言行为描述层语法约定。（重要）
-    - - [`mccp_mcpc_definition.md`](docs/mccp_mcpc_definition.md): MCCP的符号-伪代码层语法约定。
+    - [`mccp_mcpc_definition.md`](docs/mccp_mcpc_definition.md): MCCP的符号-伪代码层语法约定。
     - [`mccp_project_structure_definition.md`](docs/mccp_project_structure_definition.md): 定义标准的 MCCP 项目文件结构和命名约定。
     - [`mccp_project_config_definition.md`](docs/mccp_project_config_definition.md): 详细说明项目的核心配置文件 `mccp_config.json` 的结构和用途。
     - [`mccp_project_symbols_definition.md`](docs/mccp_project_symbols_definition.md): 详细说明项目符号表文件 `mccp_symbols.json`
