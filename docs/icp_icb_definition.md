@@ -1,4 +1,4 @@
-# ICP 半自然语言行为描述层语法约定文档
+# ICB - Intent Code Behavior 半自然语言行为描述层语法约定文档
 
 ## 前言
 

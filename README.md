@@ -66,7 +66,6 @@ ICP 的约定依赖于一系列定义文件，它们一同构成对ICP的定义�
 - 核心文档体系:
     - [`icp_documentation.md`](docs/icp_documentation.md): ICP 的总体介绍、理念、抽象层级和基本特征。
     - [`icp_icb_definition.md`](docs/icp_icb_definition.md): ICP的半自然语言行为描述层语法约定。（重要）
-    - [`icp_mcpc_definition.md`](docs/icp_mcpc_definition.md): ICP的符号-伪代码层语法约定。
     - [`icp_project_structure_definition.md`](docs/icp_project_structure_definition.md): 定义标准的 ICP 项目文件结构和命名约定。
     - [`icp_project_config_definition.md`](docs/icp_project_config_definition.md): 详细说明项目的核心配置文件 `icp_config.json` 的结构和用途。
     - [`icp_project_symbols_definition.md`](docs/icp_project_symbols_definition.md): 详细说明项目符号表文件 `icp_symbols.json`
@@ -156,4 +155,3 @@ ICP 是一个不断演进的项目，我们将持续关注大模型能力的发�
 - v0.1.1: 完善反向构建功能，特别是反向构建过程中的符号表生成功能
 - v0.1.2: 固定反向构建功能的行为逻辑，会正式创建demo repo并引入更多demo
 - v0.2.1: 大更新，正向/反向构建功能的基本稳定可控
-
