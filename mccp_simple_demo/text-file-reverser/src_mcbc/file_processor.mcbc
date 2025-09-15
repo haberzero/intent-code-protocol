@@ -1,4 +1,4 @@
-// MCCP: Behavior Description for File Processor
+// ICP: Behavior Description for File Processor
 
 // Function to reverse lines of a file
 FUNCTION reverseFileLines:

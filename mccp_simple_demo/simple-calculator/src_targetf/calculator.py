@@ -1,4 +1,4 @@
-# MCCP: Target Code (Python) for Calculator
+# ICP: Target Code (Python) for Calculator
 
 def add_numbers(num1, num2):
     """Adds two numbers."""

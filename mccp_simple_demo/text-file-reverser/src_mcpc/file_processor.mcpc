@@ -1,4 +1,4 @@
-// MCCP: Pseudo Code for File Line Reversal
+// ICP: Pseudo Code for File Line Reversal
 
 // Function to reverse lines of a file
 FUNC reverseFileLines(input_filepath, output_filepath):

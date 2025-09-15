@@ -1,6 +1,6 @@
 {
     "projectName": "basic_statistics_app",
-    "mccpVersion": "0.0.2",
+    "icpVersion": "0.0.2",
     "targetLanguage": "Python",
     "api-url": "",
     "api-key": "",

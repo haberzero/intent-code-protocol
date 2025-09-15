@@ -1,4 +1,4 @@
-// MCCP: Symbolic Pseudo Code for Calculator
+// ICP: Symbolic Pseudo Code for Calculator
 
 // Function addNumbers
 FUNC addNumbers(num1, num2):

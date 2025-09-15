@@ -1,7 +1,7 @@
 {
     "sub_symbols_files": [
-        "mccp_symbols_sub1.json",
-        "mccp_symbols_sub2.json"
+        "icp_symbols_sub1.json",
+        "icp_symbols_sub2.json"
     ],
     "ignore_list": [
         "path/to/ignored_file1",

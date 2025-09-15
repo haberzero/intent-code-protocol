@@ -28,7 +28,7 @@ tmp/
 *.swp
 *~
 
-# MCCP generated files (consider ignoring src_target if fully generated)
+# ICP generated files (consider ignoring src_target if fully generated)
 # src_target/
 
 # Configuration files that might contain sensitive info (handle carefully)

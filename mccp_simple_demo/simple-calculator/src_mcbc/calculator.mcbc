@@ -1,4 +1,4 @@
-// MCCP: Behavior Description for Calculator
+// ICP: Behavior Description for Calculator
 
 // Function to add two numbers
 FUNCTION addNumbers:

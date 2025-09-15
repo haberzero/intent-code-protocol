@@ -1,10 +1,10 @@
-# MCCP 符号-伪代码层语法约定文档
+# ICP 符号-伪代码层语法约定文档
 
 ！！！未完善！！！
 
 此文档暂时经由我的概念描述，借助flowith直接生成，极大概率不会是真正的最终方案
 
-现阶段，出于开发周期和我个人时间精力成本的考虑，我将直接实现从mcbc代码到实际目标代码的转化，跳过mcpc的生成过程
+现阶段，出于开发周期和我个人时间精力成本的考虑，我将直接实现从icb代码到实际目标代码的转化，跳过mcpc的生成过程
 
 然而，mcpc层仍然具备其必要性，这一抽象层不会被弃用。在未来将会实现的反向构建功能中，符号-伪代码层将会至关重要
 
@@ -39,28 +39,28 @@
 
 ## 前言
 
-`.mcpc` 文件是 模型上下文代码协议 (MCCP) 中介表示层 (Intermediate Representation Layer) 的核心组成，位于符号-伪代码层 (Symbol-Pseudocode Layer)。它在行为描述层 (`.mcbc`) 和目标代码生成层 (`src_target`) 之间扮演关键桥梁角色。
+`.mcpc` 文件是 模型上下文代码协议 (ICP) 中介表示层 (Intermediate Representation Layer) 的核心组成，位于符号-伪代码层 (Symbol-Pseudocode Layer)。它在行为描述层 (`.icb`) 和目标代码生成层 (`src_target`) 之间扮演关键桥梁角色。
 
 其核心作用包括：
 
-1. 精确符号关联: 使用外部符号表文件（如 `mccp_symbols.json`）中定义的符号（`VAR`, `FUNC`, `CLASS`, 内置指令等），将高层行为具象化为可执行逻辑单元。
+1. 精确符号关联: 使用外部符号表文件（如 `icp_symbols.json`）中定义的符号（`VAR`, `FUNC`, `CLASS`, 内置指令等），将高层行为具象化为可执行逻辑单元。
 2. 结构化逻辑表达: 提供结构化、接近编程语言但保持平台和语言抽象的伪代码语法，用于清晰、无歧义地描述计算逻辑、数据流程、控制流及对象交互。
-3. 目标代码生成依据: 作为 MCCP 工具链将抽象行为转换为特定目标编程语言源代码的主要输入依据。工具链解析 `.mcpc` 文件，结合符号定义和目标语言规则，生成最终可编译代码。
+3. 目标代码生成依据: 作为 ICP 工具链将抽象行为转换为特定目标编程语言源代码的主要输入依据。工具链解析 `.mcpc` 文件，结合符号定义和目标语言规则，生成最终可编译代码。
 
-MCCP 协议栈的简化视图概念图：
+ICP 协议栈的简化视图概念图：
 
 ```text
 
 +-------------------+      +-----------------------+      +--------------------+
 | Behavior Layer    | <--> | Symbol-Pseudocode     | <--> | Target Code Layer  |
-| (`.mcbc` files)   |      | (`src_target` files)  |      |                    |
+| (`.icb` files)   |      | (`src_target` files)  |      |                    |
 +-------------------+      | (`.mcpc` files)       |      +--------------------+
                            +-----------------------+
                                      ^
                                      |
                              +-------------------+
                              | Symbol Table      |
-                             | (`mccp_symbols.json`)|
+                             | (`icp_symbols.json`)|
                              +-------------------+
 
 ```
@@ -69,7 +69,7 @@ MCCP 协议栈的简化视图概念图：
 
 `.mcpc` 文件采用结构化伪代码风格，强调可读性和解析性。允许包含中文和英文的描述性注释 (`//`) 和模型指令 (`@`)，但核心语法元素（关键字、操作符、内置指令名称）必须使用标准英文标识符，确保工具链解析一致性。
 
-通常，一个 `.mcpc` 文件对应于 `src_mcbc` 和 `src_target` 目录下具有相同基础名称的文件。文件和目录结构应与 `src_mcbc` 和 `src_target` 目录同步，反映项目模块划分和文件对应关系。
+通常，一个 `.mcpc` 文件对应于 `src_icb` 和 `src_target` 目录下具有相同基础名称的文件。文件和目录结构应与 `src_icb` 和 `src_target` 目录同步，反映项目模块划分和文件对应关系。
 
 ## 1.伪代码文件结构
 
@@ -121,7 +121,7 @@ END CLASS // DataStore类结束，0缩进
 
 ### 2.1 语法语言约定
 
-为确保 MCCP 工具链解析一致性，`.mcpc` 文件核心语法元素必须使用标准英文标识符。
+为确保 ICP 工具链解析一致性，`.mcpc` 文件核心语法元素必须使用标准英文标识符。
 
 包括：
 
@@ -129,7 +129,7 @@ END CLASS // DataStore类结束，0缩进
 - 所有 内置函数或指令名称 (Built-in Function/Instruction Names): 例如 `PRINT`, `EXIT`, `LOG_ERROR`, `WAIT`, `TYPE`, `OPEN_FILE`, `READ_ALL_LINES_FROM_HANDLE`, `CLOSE_FILE_HANDLE`, `REVERSE_LIST_IN_PLACE`, `WRITE_LINE_TO_HANDLE`, `APPEND`, `LENGTH` 等。这些名称是语言内置或通过标准库符号定义。
 - 所有 操作符 (Operators): 例如 `==`, `!=`, `<`, `>`, `<=`, `>=`, `AND`, `OR`, `NOT`, `IS NULL`, `IS NOT NULL`, `IS TRUE`, `IS FALSE`, `+`, `-`, `*`, `/`, `%`, `.` (成员访问), `[]` (索引/切片访问), `()` (函数调用/分组).
 
-用户自定义符号名称（如变量名、函数名、类名、方法名）可在外部符号表 (`mccp_symbols.json`) 中定义为包含中文或其他语言的混合名称，并在 `.mcpc` 文件中使用。字符串字面量及注释 (`//` 和 `@`) 也允许包含中文或其他语言字符。
+用户自定义符号名称（如变量名、函数名、类名、方法名）可在外部符号表 (`icp_symbols.json`) 中定义为包含中文或其他语言的混合名称，并在 `.mcpc` 文件中使用。字符串字面量及注释 (`//` 和 `@`) 也允许包含中文或其他语言字符。
 
 ### 2.2 数据类型系统
 
@@ -649,7 +649,7 @@ END CLASS // 类体结束，显式 END CLASS，0缩进
 
 ## 4.符号解析与作用域
 
-`.mcpc` 语言中符号（变量、函数、类、方法）可见性和生命周期由定义位置决定。解析遵循作用域规则。外部符号表 (`mccp_symbols.json`) 定义全局可见符号。
+`.mcpc` 语言中符号（变量、函数、类、方法）可见性和生命周期由定义位置决定。解析遵循作用域规则。外部符号表 (`icp_symbols.json`) 定义全局可见符号。
 
 规则:
 
@@ -664,7 +664,7 @@ END CLASS // 类体结束，显式 END CLASS，0缩进
 示例:
 
 ```mcpc
-// 假设 mccp_symbols.json 中定义了全局函数 globalFunc() 和全局类 GlobalClass
+// 假设 icp_symbols.json 中定义了全局函数 globalFunc() 和全局类 GlobalClass
 
 FUNC fileLocalFunc(): // 文件局部函数 (文件作用域)
     VAR:[] localFileVar = 10 // 函数局部变量
@@ -723,12 +723,12 @@ CLASS FileLocalClass: // 文件局部类 (文件作用域)
 以下为完整 `.mcpc` 文件示例，综合使用上述语法，包括结构、核心元素、缩进和注释。改编自文件行反转逻辑，含类定义和使用。
 
 ```mcpc
-// mccp_file_processor.mcpc
-// MCCP Symbol-Pseudocode for a simple file line reversal module - Final Optimized Version
+// icp_file_processor.mcpc
+// ICP Symbol-Pseudocode for a simple file line reversal module - Final Optimized Version
 
 @ This module implements file line reversal logic.
 @ It reads lines from an input file, reverses them, and writes to an output file.
-@ All referenced external symbols (e.g., OPEN_FILE, LOG_ERROR) are assumed to be defined in mccp_symbols.json.
+@ All referenced external symbols (e.g., OPEN_FILE, LOG_ERROR) are assumed to be defined in icp_symbols.json.
 
 // -----------------------------------------------------------------------------------
 // Helper Class: LineBuffer (辅助类：行缓冲区)
