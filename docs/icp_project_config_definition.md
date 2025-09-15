@@ -1,8 +1,6 @@
 # ICP 配置文件 (`icp_config.json`) 规范
 
-`icp_config.json` 文件是 ICP 项目中的核心组成部分，作为项目特定的配置清单。它定义了指导 ICP 工具链处理项目的行为描述层 (`.icb`) 和符号描述层 (`.mcpc`) 文件以及生成目标源代码 (`src_target`) 所必需的基本参数。
-
-该文件指定了项目元数据、目标编程语言、构建参数、依赖项，以及将 ICP 层文件映射到目标文件系统结构的规则，包括重要的命名约定。
+`icp_config.json` 文件是 ICP 项目中的核心组成部分，作为项目特定的配置清单。它定义了 ICP 工程的一些基本信息，比如项目文件的额外后缀名定义、目标语言、工程名称等。
 
 ## 文件位置
 
@@ -17,7 +15,6 @@
 ├── config/
 │   └── icp_config.json  <-- 文件位置
 ├── src_icb/
-├── src_mcpc/
 └── src_target/
 ```
 
@@ -81,50 +78,44 @@
 
 ```json
 "fileSystemMapping": {
-  "icbDir": "src_icb/", // 行为描述层目录，允许存在不同的工程结构，便于适配不同的历史性代码
-  "mcpcDir": "src_mcpc/",   // 符号描述层目录，允许存在不同的工程结构，便于适配不同的历史性代码
-  "targetDir": "src_target/",  // 目标代码目录，允许存在不同的工程结构，便于适配不同的历史性代码
-  "isExtraSuffix": false // 默认值，与文件命名有关，见下方规则
+  "behavioral_layer_dir": "src_icb/", // 行为描述层目录，允许存在不同的工程结构，便于适配不同的历史性代码
+  "target_layer_dir": "src_target/",  // 目标代码目录，允许存在不同的工程结构，便于适配不同的历史性代码
+  "is_extra_suffix": false // 默认值，与文件命名有关，见下方规则
 }
 ```
 
-*   **`behavioralLayerDir`**:
+*   **`behavioral_layer_dir`**:
     *   类型: `string`
     *   描述: 行为描述层文件的根目录。
-    *   标准值: `"src_mbh/"`
+    *   标准值: `"src_icb/"`
 
-*   **`symbolicLayerDir`**:
-    *   类型: `string`
-    *   描述: 符号-伪代码层文件的根目录。
-    *   标准值: `"src_mpc/"`
-
-*   **`targetLayerDir`**:
+*   **`target_layer_dir`**:
     *   类型: `string`
     *   描述: 目标源代码文件的根目录。
     *   标准值: `"src_target/"`
 
 *   **`is_extra_suffix`**:
     *   类型: `boolean`
-    *   描述: 此字段控制是否在对应的 `.icb` 和 `.mcpc` 文件的基本文件名之后添加一个派生自原始目标文件扩展名的额外后缀。这对于区分对应不同目标文件类型（例如 C 语言中的 `.c` 和 `.h`）的 ICP 文件至关重要。事实上，此字段主要是针对C/C++进行设计的。
+    *   描述: 此字段控制是否在对应的 `.icb` 文件的基本文件名之后添加一个派生自原始目标文件扩展名的额外后缀。这对于区分对应不同目标文件类型（例如 C 语言中的 `.c` 和 `.h`）的 ICB 文件至关重要。事实上，此字段主要是针对C/C++进行设计的。
 
-    *   **通用行为 (应用时):** 如果为 `true`，则在 ICP 层扩展名 (`.icb` 或 `.mcpc`) 之前，会在基本文件名后附加一个下划线 (`_`) 跟着原始目标文件的扩展名（不包含开头的点）。
-        *   示例: 目标文件 `file.ext` -> ICP 文件 `file_ext.icb`, `file_ext.mcpc`。
+    *   **通用行为 (应用时):** 如果为 `true`，则在 ICB 层扩展名 (`.icb`) 之前，会在基本文件名后附加一个下划线 (`_`) 跟着原始目标文件的扩展名（不包含开头的点）。
+        *   示例: 目标文件 `file.ext` -> ICB 文件 `file_ext.icb`。
 
     *   **C 语言家族 (`C`, `C++`, 等):**
         *   对于 `targetLanguage` 设置为 C 语言家族（例如 `"C"`, `"C++"`）时，`is_extra_suffix` 的行为是**隐式为 `true`** 的，并且通常不应在配置中显式设置为 `false`，因为工具链会强制执行特定的 C 语言家族命名规则，而无论此标志在 JSON 中的值如何。
         *   额外后缀是根据 C/C++ 文件类型**固定**的：
             *   对于头文件（例如 `.h`, `.hpp`）：额外后缀是 `_h`。
-                *   示例: `utils.h` -> `utils_h.icb`, `utils_h.mcpc`。
+                *   示例: `utils.h` -> `utils_h.icb`。
             *   对于源文件（例如 `.c`, `.cpp`, `.cc`, `.cxx`）：额外后缀分别是 `_c` 或 `_cpp`。
-                *   示例: `main.c` -> `main_c.icb`, `main_c.mcpc`。
-                *   示例: `module.cpp` -> `module_cpp.icb`, `module_cpp.mcpc`。
+                *   示例: `main.c` -> `main_c.icb`。
+                *   示例: `module.cpp` -> `module_cpp.icb`。
 
     *   **其他语言（例如 `Python`, `Java`, `JavaScript`）:**
         *   对于其他语言，`is_extra_suffix` 字段是**可配置的**。
         *   如果 `is_extra_suffix` 为 `true`：额外后缀直接派生自目标文件的扩展名（例如 `.py` -> `_py`）。
-            *   示例: `script.py` -> `script_py.icb`, `script_py.mcpc`。
+            *   示例: `script.py` -> `script_py.icb`。
         *   如果 `is_extra_suffix` 为 `false` 或字段被省略（默认行为）：不添加额外后缀。
-            *   示例: `script.py` -> `script.icb`, `script.mcpc`。
+            *   示例: `script.py` -> `script.icb`。
 
 ## 其他标准字段
 
@@ -168,27 +159,21 @@
 
 ```json
 {
-    "projectName": "basic_statistics_app",
-    "icpVersion": "0.0.2",
-    "targetLanguage": "Python",
-    "api-url": "",
-    "api-key": "",
-    "llmModel": "Qwen/Qwen3-8B",
-    "dependentLib": [
-        "numpy",
-        "scipy"
-    ],
-    "buildSettings": {
-        "installCommand": ""
+    "project_name": "mccp_toolchain",
+    "mccp_version": "0.0.3",
+    "target_language": "Python",
+    "target_suffix": ".py",
+    "build_settings": {
+        "install_command": ""
     },
-    "fileSystemMapping": {
-        "behavioralLayerDir": "src_mbh/",
-        "symbolicLayerDir": "src_mpc/",
-        "targetLayerDir": "src_target/",
+    "file_system_mapping": {
+        "behavioral_layer_dir": "src_ibc",
+        "target_layer_dir": "src_main",
         "is_extra_suffix": true
     },
-    "fileSpecificSettings":{}
+    "file_specific_settings":{}
 }
+
 ```
 
-在这个示例中，`is_extra_suffix` 被设置为 `true`，这意味着 `.icb` 和 `.mcpc` 文件的基本文件名后会附加一个下划线和原始目标文件的扩展名。例如，对于 `main.py`，对应的 ICP 文件将是 `main_py.icb` 和 `main_py.mcpc`。
+在这个示例中，`is_extra_suffix` 被设置为 `true`，这意味着 `.icb` 文件的基本文件名后会附加一个下划线和原始目标文件的扩展名。例如，对于 `main.py`，对应的 ICP 文件将是 `main_py.icb`。

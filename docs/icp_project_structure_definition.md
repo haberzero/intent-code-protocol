@@ -12,9 +12,8 @@
 ├── license
 ├── requirements.md # 自然语言需求描述层文件
 ├── src_icb/       # 行为描述层源码目录（包括符号表文件）
-├── src_mcpc/       # 符号-伪代码层源码目录（包括符号表文件）
 ├── src_target/     # 目标源代码目录
-├── icp_config/         # 项目参数文件夹
+├── .icp_config/         # 项目参数文件夹
 ├── temp/           # 临时文件文件夹
 └── ...             # 其他项目相关文件，如gitgnore等（可选）
 ```
@@ -28,83 +27,81 @@
 - `license`: 许可证文件。包含项目的开源或许可信息
 - `.gitignore`: 以gitignore为例的其它可选文件等
 
-## 3. 三个主要源码文件夹
+## 3. 两个主要源码文件夹
 
-ICP的核心在于三个层级的源码文件，它们分别代表了从高层行为描述到最终可执行代码的转换过程
+ICP的核心在于两个层级的源码文件，它们代表了从高层行为描述到最终可执行代码的转换过程
 
-这三个层级的文件应分别存放在独立的文件夹中，但其内部的目录结构和文件名称（除后缀外）必须保持**完全一致**，形成严格的一一对应关系
+这两个层级的文件应分别存放在独立的文件夹中，但其内部的目录结构和文件名称（除后缀外）必须保持**完全一致**，形成严格的一一对应关系
 
 文件夹推荐命名如下：
 
 - `src_icb/`: 行为描述层源码目录。存放行为描述层文件，后缀名为 `.icb`。缩写含义：model context behavior
-- `src_mcpc/`: 符号-伪代码层源码目录。存放符号-伪代码层文件，后缀名为 `.mcpc`。缩写含义：model context pseudo code
-- `src_target/`: 目标源代码目录。存放最终生成或手动编写的目标语言源代码文件（如 `.c`, `.cpp`, `.py`, `.java` 等）
+- `src_target/` 或 `src_tmain/`: 目标源代码目录。存放最终生成或手动编写的目标语言源代码文件（如 `.c`, `.cpp`, `.py`, `.java` 等）
 
 **重要原则：** 
 
-`src_icb/`, `src_mcpc/`, `src_target/` 这三个目录下的子目录结构必须完全相同，且位于相同路径下的文件应具有相同的文件名，仅文件后缀不同
+`src_icb/`, `src_target/` 目录下的子目录结构必须完全相同，且位于相同路径下的文件应具有相同的文件名，仅文件后缀不同
 
-除此之外，符号表文件也会同时分布在src_icb以及src_mcpc的各个子文件夹下，每一层级的文件夹内的icp_symbols将会各自独立管理其当前路径内文件的对应符号表
+除此之外，符号表文件也会同时分布在src_icb的各个子文件夹下，每一层级的文件夹内的icp_symbols将会各自独立管理其当前路径内文件的对应符号表
 具体内容请查阅[`icp_project_symbols_definition.md`](docs/icp_project_symbols_definition.md)
 
 例如，如果 `src_target/utils/math.c以及math.h` 存在，则必须对应存在：
+
 - `src_icb/utils/math_c.icb` 
 - `src_icb/utils/math_h.icb`
-- `src_mcpc/utils/math_c.mcpc` 
-- `src_mcpc/utils/math_h.mcpc`
+
 (C语言的文件后缀处理)
 
 如果 `src_target/scripts/process.py` 存在且兼容性配置要求额外后缀，则对应：
+
 - `src_icb/scripts/process_py.icb`
-- `src_mcpc/scripts/process_py.mcpc`
 如果 `src_target/scripts/process.py` 存在且兼容性配置不要求额外后缀，则对应：
+
 - `src_icb/scripts/process.icb`
-- `src_mcpc/scripts/process.mcpc`
 
 ## 4. 文件命名约定
 
-文件的命名必须遵循以下约定，特别是对于 `.icb` 和 `.mcpc` 文件，需要根据对应的目标源代码文件类型进行特殊处理，以确保唯一性和清晰度
+文件的命名必须遵循以下约定，特别是对于 `.icb` 文件，需要根据对应的目标源代码文件类型进行特殊处理，以确保唯一性和清晰度
 
 a.  **基本后缀名**
     - 行为描述层文件后缀名：固定为 `.icb`。
-    - 符号-伪代码层文件后缀名：固定为 `.mcpc`。
 
 b.  **针对C/C++语言系列的特殊处理**
-    如果目标源代码文件属于C语言系列（常见的后缀有 `.c`, `.cpp`, `.h`, `.hpp` 等），其对应的行为描述层 (`.icb`) 和符号-伪代码层 (`.mcpc`) 文件名，应在原文件名末尾、扩展名（`.icb` / `.mcpc`）之前，增加一个特定的额外后缀。这个额外后缀根据原C/C++文件的类型决定：
+    如果目标源代码文件属于C语言系列（常见的后缀有 `.c`, `.cpp`, `.h`, `.hpp` 等），其对应的行为描述层 (`.icb`) 文件名，应在原文件名末尾、扩展名（`.icb`）之前，增加一个特定的额外后缀。这个额外后缀根据原C/C++文件的类型决定：
     - `.h`, `.hpp` (头文件) -> 额外后缀 `_h`
     - `.c` (C源文件) -> 额外后缀 `_c`
     - `.cpp`, `.cc`, `.cxx` (C++源文件) -> 额外后缀 `_cpp` `_cc` `_cxx`
 
-    **示例:**
-    - 目标文件 `main.h` -> 对应ICP文件: `main_h.icb`, `main_h.mcpc`
-    - 目标文件 `utils.c` -> 对应ICP文件: `utils_c.icb`, `utils_c.mcpc`
-    - 目标文件 `geometry.cpp` -> 对应ICP文件: `geometry_cpp.icb`, `geometry_cpp.mcpc`
+    例如: 
+    - 目标文件 `main.h` -> 对应ICB文件: `main_h.icb`
+    - 目标文件 `utils.c` -> 对应ICB文件: `utils_c.icb`
+    - 目标文件 `geometry.cpp` -> 对应ICB文件: `geometry_cpp.icb`
 
     在工程配置文件（参见第5项）中，对于C语言系列（如语言类型标记为 `"c"`, `"cpp"` 等），其 `is_extra_suffix` 属性应**固定为 `true`**，且其额外后缀的生成规则硬编码为上述逻辑
 
 c.  **针对其他语言系列的处理**
-    对于非C/C++的其他目标语言（如 Python, Java, JavaScript 等），其对应的行为描述层 (`.icb`) 和符号-伪代码层 (`.mcpc`) 文件名是否添加额外后缀，由工程配置配置文件中的 `is_extra_suffix` 布尔属性控制
+    对于非C/C++的其他目标语言（如 Python, Java, JavaScript 等），其对应的行为描述层 (`.icb`) 文件名是否添加额外后缀，由工程配置配置文件中的 `is_extra_suffix` 布尔属性控制
 
     - 如果在工程配置文件中，对应语言的 `is_extra_suffix` 属性为 `true`：
-        在应在原文件名末尾、扩展名（`.icb` / `.mcpc`）之前，增加一个额外后缀
+        在应在原文件名末尾、扩展名（`.icb`）之前，增加一个额外后缀
         示例:
-        - 目标文件 `script.py`, `is_extra_suffix: true` -> 对应ICP文件: `script_py.icb`, `script_py.mcpc`
-        - 目标文件 `App.java`, `is_extra_suffix: true` -> 对应ICP文件: `App_java.icb`, `App_java.mcpc`
+        - 目标文件 `script.py`, `is_extra_suffix: true` -> 对应ICP文件: `script_py.icb`
+        - 目标文件 `App.java`, `is_extra_suffix: true` -> 对应ICP文件: `App_java.icb`
 
     - 如果在工程配置文件中，对应语言的 `is_extra_suffix` 属性为 `false` 或未设置：
         无额外后缀
         示例:
-        - 目标文件 `script.py`, `is_extra_suffix: false` -> 对应ICP文件: `script.icb`, `script.mcpc`
+        - 目标文件 `script.py`, `is_extra_suffix: false` -> 对应ICP文件: `script.icb`
 
 **文件命名示例总结表:**
 
-    | 目标文件 (示例) | 目标文件类型 / 扩展名 | 兼容性配置 `is_extra_suffix` | `.icb` 文件 (示例) | `.mcpc` 文件 (示例) | 规则依据 |
+    | 目标文件 (示例) | 目标文件类型 / 扩展名 | 兼容性配置 `is_extra_suffix` | `.icb` 文件 (示例) | 规则依据 |
     | :-------------- | :-------------------- | :--------------------------- | :---------------------- | :---------------------- | :------- |
-    | `header.h`      | C/C++ Header (`.h`)   | `true` (固定)                | `header_h.icb`          | `header_h.mcpc`          | C/C++ 规则 (`_h`) |
-    | `source.c`      | C Source (`.c`)       | `true` (固定)                | `source_c.icb`          | `source_c.mcpc`          | C/C++ 规则 (`_c`) |
-    | `module.cpp`    | C++ Source (`.cpp`)   | `true` (固定)                | `module_cpp.icb`        | `module_cpp.mcpc`        | C/C++ 规则 (`_cpp`) |
-    | `util.py`       | Python (`.py`)        | `true`                       | `util_py.icb`           | `util_py.mcpc`           | 其他语言规则 (`_py`) |
-    | `util.py`       | Python (`.py`)        | `false` 或 未设置             | `util.icb`              | `util.mcpc`              | 其他语言规则 (无额外后缀) |
+    | `header.h`      | C/C++ Header (`.h`)   | `true` (固定)                | `header_h.icb`          | C/C++ 规则 (`_h`) |
+    | `source.c`      | C Source (`.c`)       | `true` (固定)                | `source_c.icb`          | C/C++ 规则 (`_c`) |
+    | `module.cpp`    | C++ Source (`.cpp`)   | `true` (固定)                | `module_cpp.icb`        | C/C++ 规则 (`_cpp`) |
+    | `util.py`       | Python (`.py`)        | `true`                       | `util_py.icb`           | 其他语言规则 (`_py`) |
+    | `util.py`       | Python (`.py`)        | `false` 或 未设置             | `util.icb`              | 其他语言规则 (无额外后缀) |
 
 ## 5. 项目配置文件夹
 
