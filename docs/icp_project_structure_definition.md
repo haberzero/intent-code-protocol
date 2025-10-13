@@ -6,7 +6,7 @@
 
 一个典型的ICP项目应采用分层、模块化的文件夹结构，以清晰地组织不同层级的代码、配置和文档。其顶级目录主要包含项目元信息文件、三个相互对应的源码层级目录、一个项目参数配置目录以及一个临时文件目录
 
-```
+```text
 / 项目根目录
 ├── README.md
 ├── license
@@ -72,7 +72,7 @@ b.  **针对C/C++语言系列的特殊处理**
     - `.c` (C源文件) -> 额外后缀 `_c`
     - `.cpp`, `.cc`, `.cxx` (C++源文件) -> 额外后缀 `_cpp` `_cc` `_cxx`
 
-    例如: 
+例如:
     - 目标文件 `main.h` -> 对应ICB文件: `main_h.icb`
     - 目标文件 `utils.c` -> 对应ICB文件: `utils_c.icb`
     - 目标文件 `geometry.cpp` -> 对应ICB文件: `geometry_cpp.icb`
@@ -95,13 +95,13 @@ c.  **针对其他语言系列的处理**
 
 **文件命名示例总结表:**
 
-    | 目标文件 (示例) | 目标文件类型 / 扩展名 | 兼容性配置 `is_extra_suffix` | `.icb` 文件 (示例) | 规则依据 |
-    | :-------------- | :-------------------- | :--------------------------- | :---------------------- | :---------------------- | :------- |
-    | `header.h`      | C/C++ Header (`.h`)   | `true` (固定)                | `header_h.icb`          | C/C++ 规则 (`_h`) |
-    | `source.c`      | C Source (`.c`)       | `true` (固定)                | `source_c.icb`          | C/C++ 规则 (`_c`) |
-    | `module.cpp`    | C++ Source (`.cpp`)   | `true` (固定)                | `module_cpp.icb`        | C/C++ 规则 (`_cpp`) |
-    | `util.py`       | Python (`.py`)        | `true`                       | `util_py.icb`           | 其他语言规则 (`_py`) |
-    | `util.py`       | Python (`.py`)        | `false` 或 未设置             | `util.icb`              | 其他语言规则 (无额外后缀) |
+| 目标文件 (示例) | 目标文件类型 / 扩展名 | 兼容性配置 `is_extra_suffix` | `.icb` 文件 (示例) | 规则依据 |
+| :-------------- | :-------------------- | :--------------------------- | :---------------------- | :---------------------- | :------- |
+| `header.h`      | C/C++ Header (`.h`)   | `true` (固定)                | `header_h.icb`          | C/C++ 规则 (`_h`) |
+| `source.c`      | C Source (`.c`)       | `true` (固定)                | `source_c.icb`          | C/C++ 规则 (`_c`) |
+| `module.cpp`    | C++ Source (`.cpp`)   | `true` (固定)                | `module_cpp.icb`        | C/C++ 规则 (`_cpp`) |
+| `util.py`       | Python (`.py`)        | `true`                       | `util_py.icb`           | 其他语言规则 (`_py`) |
+| `util.py`       | Python (`.py`)        | `false` 或 未设置             | `util.icb`              | 其他语言规则 (无额外后缀) |
 
 ## 5. 项目配置文件夹
 
