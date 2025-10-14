@@ -2,7 +2,7 @@ site_name: Intent Code Protocol Docs
 site_author: Haberzero
 
 theme: readthedocs
-repo_url: https://github.com/example/repository/
+repo_url: https://github.com/haberzero/intent-code-protocol
 
 nav:
   - Home: index.md
