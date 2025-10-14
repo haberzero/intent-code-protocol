@@ -3,6 +3,7 @@ site_author: Haberzero
 
 theme: readthedocs
 repo_url: https://github.com/haberzero/intent-code-protocol
+edit_uri: blob/main/docs/
 
 nav:
   - Home: index.md
