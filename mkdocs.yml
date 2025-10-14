@@ -1,8 +1,11 @@
 site_name: Intent Code Protocol Docs
+site_author: Haberzero
+
+theme: readthedocs
+repo_url: https://github.com/example/repository/
+
 nav:
   - Home: index.md
   - 意图代码协议: icp_documentation.md
   - 意图行为代码语法定义: icp_intent_behavior_code.md
   - ICP 配置文件规范: icp_project_config_definition.md
-
-theme: readthedocs
