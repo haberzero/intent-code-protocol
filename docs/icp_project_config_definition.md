@@ -14,7 +14,7 @@
 / 项目根目录
 ├── config/
 │   └── icp_config.json  <-- 文件位置
-├── src_icb/
+├── src_ibc/
 └── src_target/
 ```
 
@@ -48,7 +48,7 @@
 
 ```json
 "fileSystemMapping": {
-  "behavioral_layer_dir": "src_icb/", // 行为描述层目录，允许存在不同的工程结构，便于适配不同的历史性代码
+  "behavioral_layer_dir": "src_ibc/", // 行为描述层目录，允许存在不同的工程结构，便于适配不同的历史性代码
   "target_layer_dir": "src_target/",  // 目标代码目录，允许存在不同的工程结构，便于适配不同的历史性代码
   "is_extra_suffix": false // 默认值，与文件命名有关，见下方规则
 }
@@ -57,7 +57,7 @@
 * **`behavioral_layer_dir`**:
   * 类型: `string`
   * 描述: 行为描述层文件的根目录。
-  * 标准值: `"src_icb/"`
+  * 标准值: `"src_ibc/"`
 
 * **`target_layer_dir`**:
   * 类型: `string`
@@ -66,23 +66,23 @@
 
 * **`is_extra_suffix`**:
   * 类型: `boolean`
-  * 描述: 此字段控制是否在对应的 `.icb` 文件的基本文件名之后添加一个派生自原始目标文件扩展名的额外后缀。这对于区分对应不同目标文件类型（例如 C 语言中的 `.c` 和 `.h`）的 ICB 文件至关重要。事实上，此字段主要是针对C/C++进行设计的。
+  * 描述: 此字段控制是否在对应的 `.ibc` 文件的基本文件名之后添加一个派生自原始目标文件扩展名的额外后缀。这对于区分对应不同目标文件类型（例如 C 语言中的 `.c` 和 `.h`）的 ibc 文件至关重要。事实上，此字段主要是针对C/C++进行设计的。
 
-  * **通用行为 (应用时):** 如果为 `true`，则在 ICB 层扩展名 (`.icb`) 之前，会在基本文件名后附加一个下划线 (`_`) 跟着原始目标文件的扩展名（不包含开头的点）。
-    * 示例: 目标文件 `file.ext` -> ICB 文件 `file_ext.icb`。
+  * **通用行为 (应用时):** 如果为 `true`，则在 ibc 层扩展名 (`.ibc`) 之前，会在基本文件名后附加一个下划线 (`_`) 跟着原始目标文件的扩展名（不包含开头的点）。
+    * 示例: 目标文件 `file.ext` -> ibc 文件 `file_ext.ibc`。
 
   * **C 语言家族 (`C`, `C++`, 等):**
     * 对于 `targetLanguage` 设置为 C 语言家族（例如 `"C"`, `"C++"`）时，`is_extra_suffix` 的行为是**隐式为 `true`** 的，并且通常不应在配置中显式设置为 `false`，因为工具链会强制执行特定的 C 语言家族命名规则，而无论此标志在 JSON 中的值如何。
     * 额外后缀是根据 C/C++ 文件类型**固定**的：
       * 对于头文件（例如 `.h`, `.hpp`）：额外后缀是 `_h`。
-        * 示例: `utils.h` -> `utils_h.icb`。
+        * 示例: `utils.h` -> `utils_h.ibc`。
       * 对于源文件（例如 `.c`, `.cpp`, `.cc`, `.cxx`）：额外后缀分别是 `_c` 或 `_cpp`。
-        * 示例: `main.c` -> `main_c.icb`。
-        * 示例: `module.cpp` -> `module_cpp.icb`。
+        * 示例: `main.c` -> `main_c.ibc`。
+        * 示例: `module.cpp` -> `module_cpp.ibc`。
 
   * **其他语言（例如 `Python`, `Java`, `JavaScript`）:**
     * 对于其他语言，`is_extra_suffix` 字段是**可配置的**。
     * 如果 `is_extra_suffix` 为 `true`：额外后缀直接派生自目标文件的扩展名（例如 `.py` -> `_py`）。
-      * 示例: `script.py` -> `script_py.icb`。
+      * 示例: `script.py` -> `script_py.ibc`。
     * 如果 `is_extra_suffix` 为 `false` 或字段被省略（默认行为）：不添加额外后缀。
-      * 示例: `script.py` -> `script.icb`。
+      * 示例: `script.py` -> `script.ibc`。

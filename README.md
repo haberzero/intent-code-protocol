@@ -45,10 +45,10 @@ ICP 包含三个抽象层级和一个贯穿全局的符号表概念。
     - 示例: “创建一个简单的命令行工具，提示用户输入姓名，然后打印一句个性化的问候语。”
     - 对应文件: 通常体现在项目的 `requirements.md` 文件中
 
-2.  半自然语言行为描述层 (`src_icb/*.icb`):
+2.  半自然语言行为描述层 (`src_ibc/*.ibc`):
     - 描述: 对自然语言需求的结构化拆解，具象化软件框架、运行流程、模块定义（类、函数）、业务逻辑处理方式。侧重于“如何通过步骤和行为实现”。允许使用中文/英文进行编写和构建
     - 核心: 定义项目的基本结构、流程控制，并在此层级生成代码的关键符号表框架
-    - 对应文件: 位于 `src_icb/` 目录下，使用 `.icb` 扩展名。缩写含义：model context behavior code
+    - 对应文件: 位于 `src_ibc/` 目录下，使用 `.ibc` 扩展名。缩写含义：model context behavior code
 
 3.  可执行代码层
 
@@ -62,7 +62,7 @@ ICP 的约定依赖于一系列定义文件，它们一同构成对ICP的定义�
 
 - 核心文档体系:
     - [`icp_documentation.md`](docs/icp_documentation.md): ICP 的总体介绍、理念、抽象层级和基本特征。
-    - [`icp_icb_definition.md`](docs/icp_icb_definition.md): ICP的半自然语言行为描述层语法约定。（重要）
+    - [`icp_ibc_definition.md`](docs/icp_ibc_definition.md): ICP的半自然语言行为描述层语法约定。（重要）
     - [`icp_project_structure_definition.md`](docs/icp_project_structure_definition.md): 定义标准的 ICP 项目文件结构和命名约定。
     - [`icp_project_config_definition.md`](docs/icp_project_config_definition.md): 详细说明项目的核心配置文件 `icp_config.json` 的结构和用途。
     - [`icp_project_symbols_definition.md`](docs/icp_project_symbols_definition.md): 详细说明项目符号表文件 `icp_symbols.json`
@@ -73,7 +73,7 @@ ICP 的约定依赖于一系列定义文件，它们一同构成对ICP的定义�
     - `icp_api_config.json` 储存api-url/key等内容。请确保此文件始终处于.gitignore列表中，避免敏感信息泄露
     - `icp_compatibility.json` （待实现）定义项目所需的 ICP 协议版本、目标语言、兼容工具链版本、预期 LLM 等兼容性元数据，确保跨环境一致性
 
-- 符号表文件示例 (分布在`src_icb/`当中):
+- 符号表文件示例 (分布在`src_ibc/`当中):
     - `icp_symbols.json`: 定义项目的符号表结构，包括文件结构、符号定义、依赖关系等
 
 - 源码文件示例（待完善）
@@ -87,7 +87,7 @@ ICP 的约定依赖于一系列定义文件，它们一同构成对ICP的定义�
 ├── readme.md             # 项目说明文件
 ├── license               # 项目许可证文件
 ├── requirements.md       # 自然语言需求描述层文件
-├── src_icb/             # 行为描述层源码目录（包括符号表文件）
+├── src_ibc/             # 行为描述层源码目录（包括符号表文件）
 ├── src_target/           # 生成的目标源代码目录
 ├── config/               # 项目参数文件夹
 │   ├── icp_config.json      # 项目核心配置文件
@@ -96,14 +96,14 @@ ICP 的约定依赖于一系列定义文件，它们一同构成对ICP的定义�
 ```
 
 - `requirements.md`: 存放项目的原始需求，自然语言表述。
-- `src_icb/`: 存放行为描述层文件，使用 `.icb` 扩展名。
+- `src_ibc/`: 存放行为描述层文件，使用 `.ibc` 扩展名。
 - `src_target/`: 存放 ICP 工具链生成的目标编程语言源代码。
 - `config/`: 集中存放 `icp_config.json`, `icp_compatibility.json` 等项目参数和元数据文件。
 
 目录布局与命名原则:
 
-- `src_icb/`, `src_target/` 两个目录下的文件结构和文件名（除扩展名外）应保持一一对应。
-- 针对不同目标语言 ——主要是C/C++—— `.icb` 文件的命名可能需要额外后缀，具体规则详见 [`icp_project_structure_definition.md`](docs/icp_project_structure_definition.md)。
+- `src_ibc/`, `src_target/` 两个目录下的文件结构和文件名（除扩展名外）应保持一一对应。
+- 针对不同目标语言 ——主要是C/C++—— `.ibc` 文件的命名可能需要额外后缀，具体规则详见 [`icp_project_structure_definition.md`](docs/icp_project_structure_definition.md)。
 - （待实现）旁路式工程不遵循以上工程目录结构定义
 
 ## 5. 示例工程介绍
@@ -121,8 +121,8 @@ ICP 的约定依赖于一系列定义文件，它们一同构成对ICP的定义�
 3.  探索示例工程: 选择一个或多个示例项目。
     - 首先阅读项目的 `requirements.md`，理解其原始需求。
     - 同步查阅 `icp_config/icp_config.json`，理解项目配置文件的内容
-    - 阅读 `src_icb/` 目录下的 `.icb` 文件，观察需求是如何被拆解为半自然语言的行为描述
-    - 最后，查看 `src_target/` 目录下生成的目标代码，对比其与 `.icb` 文件的关系
+    - 阅读 `src_ibc/` 目录下的 `.ibc` 文件，观察需求是如何被拆解为半自然语言的行为描述
+    - 最后，查看 `src_target/` 目录下生成的目标代码，对比其与 `.ibc` 文件的关系
 4.  实践 (待完善): 随着 ICP 工具链的逐步完善，您可以尝试使用工具对这些示例项目进行正向构建（从 ICP 文件生成代码）或反向构建（从现有代码生成 ICP 文件），亲身体验 ICP 的工作流程。
 
 通过上述步骤，您将能够系统地理解 ICP 的设计思想、文件结构，并掌握根据行为描述层准确控制大模型的代码生成过程的能力
